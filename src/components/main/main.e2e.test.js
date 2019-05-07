@@ -5,12 +5,20 @@ import Main from "../main/main.jsx";
 
 Enzyme.configure({adapter: new Adapter()});
 
-const names = [`Beautiful & luxurious apartment at great location`];
+const mockOffers = [
+  {
+    src: `img/apartment-01.jpg`,
+    price: 120,
+    type: `Apartment`,
+    title: `Beautiful &amp; luxurious apartment at great location`,
+    rating: 93
+  }
+];
 
 it(`correct click handler on card title`, () => {
   const clickHandler = jest.fn();
   const main = shallow(<Main
-    names={names}
+    offers={mockOffers}
   />);
 
   const headerLink = main.find(`.place-card__name a`);
