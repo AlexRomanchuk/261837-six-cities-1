@@ -7,10 +7,10 @@ export default class Noteboard extends PureComponent {
     super(props);
     this.state = {
       activeCard: null,
-      getData: (data) => {
-        this.state.activeCard = data;
-      }
     };
+  }
+  getData(data) {
+    this.setState({activeCard: data});
   }
   render() {
     return <div className="cities__places-list places__list tabs__content">
@@ -23,7 +23,7 @@ export default class Noteboard extends PureComponent {
         title={item.title}
         onClick={(evt) => {
           evt.preventDefault();
-          this.state.getData(item);
+          this.getData(item);
         }}
       />)
       }
