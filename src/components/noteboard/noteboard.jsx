@@ -25,6 +25,9 @@ export default class Noteboard extends PureComponent {
           evt.preventDefault();
           this.getData(item);
         }}
+        onMouseOver={() => {
+          this.getData(item);
+        }}
       />)
       }
     </div>;

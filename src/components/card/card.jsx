@@ -8,9 +8,10 @@ const Card = (props) => {
     title,
     price,
     rating,
-    onClick
+    onClick,
+    onMouseOver
   } = props;
-  return <article className="cities__place-card place-card">
+  return <article className="cities__place-card place-card" onMouseOver={onMouseOver}>
     <div className="cities__image-wrapper place-card__image-wrapper">
       <a href="#" onClick={onClick}>
         <img className="place-card__image" src={src} width="260" height="200" alt="Place image" />
@@ -49,7 +50,8 @@ Card.propTypes = {
   src: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  onMouseOver: PropTypes.func.isRequired
 };
 
 export default Card;
