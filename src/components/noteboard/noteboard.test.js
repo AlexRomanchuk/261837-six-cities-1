@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import Main from "../main/main.jsx";
+import Noteboard from "../noteboard/noteboard.jsx";
 
 const mockOffers = [
   {
@@ -33,10 +33,10 @@ const mockOffers = [
   }
 ];
 
-it(`correct renders main page`, () => {
+it(`correct renders noteboard page`, () => {
   const tree = renderer
-    .create(<Main
-      offers={mockOffers}
+    .create(<Noteboard
+      data={mockOffers}
     />)
     .toJSON();
   expect(tree).toMatchSnapshot();

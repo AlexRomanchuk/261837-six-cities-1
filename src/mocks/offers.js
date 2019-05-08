@@ -1,8 +1,4 @@
-import React from "react";
-import renderer from "react-test-renderer";
-import Main from "../main/main.jsx";
-
-const mockOffers = [
+export const offers = [
   {
     src: `img/apartment-01.jpg`,
     price: 120,
@@ -32,12 +28,3 @@ const mockOffers = [
     rating: 100
   }
 ];
-
-it(`correct renders main page`, () => {
-  const tree = renderer
-    .create(<Main
-      offers={mockOffers}
-    />)
-    .toJSON();
-  expect(tree).toMatchSnapshot();
-});
