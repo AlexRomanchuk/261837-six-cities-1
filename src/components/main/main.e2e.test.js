@@ -11,7 +11,8 @@ const mockOffers = [
     price: 120,
     type: `Apartment`,
     title: `Beautiful &amp; luxurious apartment at great location`,
-    rating: 93
+    rating: 93,
+    coords: [52.3909553943508, 4.85309666406198]
   }
 ];
 
