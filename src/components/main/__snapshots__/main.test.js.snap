@@ -686,7 +686,18 @@ exports[`correct renders main page 1`] = `
         >
           <section
             className="cities__map map"
-          />
+          >
+            <div
+              id="map"
+              style={
+                Object {
+                  "height": "100%",
+                }
+              }
+            >
+              Не удалось показать карту
+            </div>
+          </section>
         </div>
       </div>
     </div>
