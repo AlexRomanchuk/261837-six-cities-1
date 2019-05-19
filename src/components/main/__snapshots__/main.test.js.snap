@@ -115,43 +115,8 @@ exports[`correct renders main page 1`] = `
             className="locations__item"
           >
             <a
-              className="locations__item-link tabs__item"
-              href="#"
-            >
-              <span>
-                Paris
-              </span>
-            </a>
-          </li>
-          <li
-            className="locations__item"
-          >
-            <a
-              className="locations__item-link tabs__item"
-              href="#"
-            >
-              <span>
-                Cologne
-              </span>
-            </a>
-          </li>
-          <li
-            className="locations__item"
-          >
-            <a
-              className="locations__item-link tabs__item"
-              href="#"
-            >
-              <span>
-                Brussels
-              </span>
-            </a>
-          </li>
-          <li
-            className="locations__item"
-          >
-            <a
               className="locations__item-link tabs__item tabs__item--active"
+              href="#"
             >
               <span>
                 Amsterdam
@@ -166,7 +131,7 @@ exports[`correct renders main page 1`] = `
               href="#"
             >
               <span>
-                Hamburg
+                Dusseldorf
               </span>
             </a>
           </li>
@@ -178,7 +143,7 @@ exports[`correct renders main page 1`] = `
               href="#"
             >
               <span>
-                Dusseldorf
+                Moscow
               </span>
             </a>
           </li>
@@ -202,7 +167,9 @@ exports[`correct renders main page 1`] = `
           <b
             className="places__found"
           >
-            312 places to stay in Amsterdam
+            4
+             places to stay in 
+            Amsterdam
           </b>
           <form
             action="#"

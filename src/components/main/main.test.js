@@ -41,6 +41,8 @@ const cities = [`Amsterdam`, `Dusseldorf`, `Moscow`];
 
 const count = 4;
 
+const currentCity = `Amsterdam`;
+
 const coords = [
   {
     coords: [52.3909553943508, 4.85309666406198]
@@ -63,6 +65,7 @@ it(`correct renders main page`, () => {
       countOffers={count}
       coordsOffers={coords}
       cities={cities}
+      currentCity={currentCity}
     />)
     .toJSON();
   expect(tree).toMatchSnapshot();

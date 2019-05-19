@@ -1,5 +1,3 @@
-import {offers} from "../mocks/offers.js";
-
 export const initialState = {
   city: `Amsterdam`,
   cityCoords: [52.38333, 4.9],
@@ -11,7 +9,7 @@ export const ActionsCreator = {
     return {
       type: `CHANGE_CITY`,
       payload: currentCity
-    }
+    };
   }
 };
 
@@ -21,4 +19,5 @@ export const reducer = (state = initialState, action) => {
       city: action.payload
     });
   }
+  return {};
 };

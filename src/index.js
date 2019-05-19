@@ -10,12 +10,12 @@ const store = createStore(reducer);
 
 const init = () => {
   ReactDOM.render(
-    <Provider store={store}>
-      <Main
-        offers={offers}
-      />
-    </Provider>,
-    document.querySelector(`#root`)
+      <Provider store={store}>
+        <Main
+          offers={offers}
+        />
+      </Provider>,
+      document.querySelector(`#root`)
   );
 };
 

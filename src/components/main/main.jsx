@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import Noteboard from "../noteboard/noteboard.jsx";
 import Map from "../map/map.jsx";
 import Cities from "../cities/cities.jsx";
-import {ActionsCreator, initialState} from "../../reducers/reducer.js"
+import {initialState} from "../../reducers/reducer.js";
 import {connect} from "react-redux";
 
 const Main = (props) => {
-  const {offers, cities, countOffers, coordsOffers} = props;
+  const {offers, cities, countOffers, coordsOffers, currentCity} = props;
   return <div>
     <div style={{display: `none`}}>
       <svg xmlns="http://www.w3.org/2000/svg"><symbol id="icon-arrow-select" viewBox="0 0 7 4"><path fillRule="evenodd" clipRule="evenodd" d="M0 0l3.5 2.813L7 0v1.084L3.5 4 0 1.084V0z"></path></symbol><symbol id="icon-bookmark" viewBox="0 0 17 18"><path d="M3.993 2.185l.017-.092V2c0-.554.449-1 .99-1h10c.522 0 .957.41.997.923l-2.736 14.59-4.814-2.407-.39-.195-.408.153L1.31 16.44 3.993 2.185z"></path></symbol><symbol id="icon-star" viewBox="0 0 13 12"><path fillRule="evenodd" clipRule="evenodd" d="M6.5 9.644L10.517 12 9.451 7.56 13 4.573l-4.674-.386L6.5 0 4.673 4.187 0 4.573 3.549 7.56 2.483 12 6.5 9.644z"></path></symbol></svg>
@@ -39,13 +39,13 @@ const Main = (props) => {
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
       <div className="cities tabs">
-        <Cities data={cities} />
+        <Cities data={cities} currentCity={currentCity}/>
       </div>
       <div className="cities__places-wrapper">
         <div className="cities__places-container container">
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">{countOffers} places to stay in Amsterdam</b>
+            <b className="places__found">{countOffers} places to stay in {currentCity}</b>
             <form className="places__sorting" action="#" method="get">
               <span className="places__sorting-caption">Sort by</span>
               <span className="places__sorting-type" tabIndex="0">
@@ -85,35 +85,49 @@ Main.propTypes = {
   cities: PropTypes.array.isRequired,
   countOffers: PropTypes.number.isRequired,
   coordsOffers: PropTypes.array.isRequired,
+  currentCity: PropTypes.string.isRequired
 };
 
-const mapStateToProps = (state = initialState, ownProps) => {
+const mapStateToProps = (state = initialState, ownProps, index = 0) => {
   const cityOffers = [];
   const cities = [];
   let uniqueCities = [];
   const allCoords = [];
+  let current = ``;
   if (state) {
     ownProps.offers.forEach((item) => {
       cities.push(item.city.name);
     });
     uniqueCities = Array.from(new Set(cities));
+    const addCities = (it) => {
+      cityOffers.push(it);
+      allCoords.push(it.coords);
+    };
     ownProps.offers.forEach((item) => {
-      if (item.city.name === uniqueCities[0]) {
-        cityOffers.push(item);
+      if (index === 0) {
+        if (item.city.name === uniqueCities[index]) {
+          addCities(item);
+        }
+        current = uniqueCities[index];
+      } else {
+        if (item.city.name === state.city) {
+          addCities(item);
+        }
+        current = state.city;
       }
-      allCoords.push(item.coords);
     });
   }
   return Object.assign({}, ownProps, {
     offers: cityOffers,
     cities: uniqueCities,
     countOffers: cityOffers.length,
-    coordsOffers: allCoords
+    coordsOffers: allCoords,
+    currentCity: current
   });
 };
 
 export {Main};
 
 export default connect(
-  mapStateToProps
+    mapStateToProps
 )(Main);
