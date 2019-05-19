@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import Main from "../main/main.jsx";
+import {Main} from "../main/main.jsx";
 
 const mockOffers = [
   {
@@ -37,10 +37,32 @@ const mockOffers = [
   }
 ];
 
+const cities = [`Amsterdam`, `Dusseldorf`, `Moscow`];
+
+const count = 4;
+
+const coords = [
+  {
+    coords: [52.3909553943508, 4.85309666406198]
+  },
+  {
+    coords: [52.369553943508, 4.85309666406198]
+  },
+  {
+    coords: [52.3909553943508, 4.929309666406198]
+  },
+  {
+    coords: [52.3809553943508, 4.939309666406198]
+  }
+];
+
 it(`correct renders main page`, () => {
   const tree = renderer
     .create(<Main
       offers={mockOffers}
+      countOffers={count}
+      coordsOffers={coords}
+      cities={cities}
     />)
     .toJSON();
   expect(tree).toMatchSnapshot();

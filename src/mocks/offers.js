@@ -5,7 +5,11 @@ export const offers = [
     type: `Apartment`,
     title: `Beautiful &amp; luxurious apartment at great location`,
     rating: 93,
-    coords: [52.3909553943508, 4.85309666406198]
+    coords: [52.3909553943508, 4.85309666406198],
+    city: {
+      name: `Amsterdam`,
+      coords: [52.38333, 4.9]
+    }
   },
   {
     src: `img/room.jpg`,
@@ -13,7 +17,11 @@ export const offers = [
     type: `Private room`,
     title: `Wood and stone place`,
     rating: 80,
-    coords: [52.369553943508, 4.85309666406198]
+    coords: [52.369553943508, 4.85309666406198],
+    city: {
+      name: `Amsterdam`,
+      coords: [52.38333, 4.9]
+    }
   },
   {
     src: `img/apartment-02.jpg`,
@@ -21,7 +29,11 @@ export const offers = [
     type: `Apartment`,
     title: `Canal View Prinsengracht`,
     rating: 80,
-    coords: [52.3909553943508, 4.929309666406198]
+    coords: [52.3909553943508, 4.929309666406198],
+    city: {
+      name: `Amsterdam`,
+      coords: [52.38333, 4.9]
+    }
   },
   {
     src: `img/apartment-03.jpg`,
@@ -29,6 +41,10 @@ export const offers = [
     type: `Hotel`,
     title: `Nice, cozy, warm big bed apartment`,
     rating: 100,
-    coords: [52.3809553943508, 4.939309666406198]
+    coords: [52.3809553943508, 4.939309666406198],
+    city: {
+      name: `Amsterdam`,
+      coords: [52.38333, 4.9]
+    }
   }
 ];
