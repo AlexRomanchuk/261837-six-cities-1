@@ -39,33 +39,41 @@ const mockOffers = [
 
 const cities = [`Amsterdam`, `Dusseldorf`, `Moscow`];
 
-const count = 4;
 
 const currentCity = `Amsterdam`;
 
 const coords = [
   {
-    coords: [52.3909553943508, 4.85309666406198]
+    coordinates: [52.3909553943508, 4.85309666406198]
   },
   {
-    coords: [52.369553943508, 4.85309666406198]
+    coordinates: [52.369553943508, 4.85309666406198]
   },
   {
-    coords: [52.3909553943508, 4.929309666406198]
+    coordinates: [52.3909553943508, 4.929309666406198]
   },
   {
-    coords: [52.3809553943508, 4.939309666406198]
+    coordinates: [52.3809553943508, 4.939309666406198]
   }
 ];
+
+const cityCoords = {
+  coordinates: [52.3809553943508, 4.939309666406198]
+};
+
+const onChange = () => {
+  return true;
+};
 
 it(`correct renders main page`, () => {
   const tree = renderer
     .create(<Main
-      offers={mockOffers}
-      countOffers={count}
+      listOffers={mockOffers}
       coordsOffers={coords}
       cities={cities}
       currentCity={currentCity}
+      onChange={onChange}
+      cityCoords={cityCoords}
     />)
     .toJSON();
   expect(tree).toMatchSnapshot();

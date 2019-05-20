@@ -13,6 +13,7 @@ exports[`correct renders main page 1`] = `
       <a
         className="locations__item-link tabs__item tabs__item--active"
         href="#"
+        onClick={[Function]}
       >
         <span>
           Amsterdam
@@ -25,6 +26,7 @@ exports[`correct renders main page 1`] = `
       <a
         className="locations__item-link tabs__item"
         href="#"
+        onClick={[Function]}
       >
         <span>
           Dusseldorf
@@ -37,6 +39,7 @@ exports[`correct renders main page 1`] = `
       <a
         className="locations__item-link tabs__item"
         href="#"
+        onClick={[Function]}
       >
         <span>
           Moscow
