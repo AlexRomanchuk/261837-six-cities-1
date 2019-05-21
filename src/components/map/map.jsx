@@ -1,51 +1,80 @@
-import React, {PureComponent} from "react";
+import React, {PureComponent} from 'react';
+import leaflet from 'leaflet';
 import PropTypes from "prop-types";
-import leaflet from "leaflet";
 
-export default class Map extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
+const markerIcon = leaflet.icon({
+  iconUrl: `img/pin.svg`,
+  iconSize: [27, 39]
+});
+
+const activeMarkerIcon = leaflet.icon({
+  iconUrl: `img/active-pin.svg`,
+  iconSize: [27, 39]
+});
+
+class Map extends PureComponent {
   render() {
     return <div id="map" style={{height: `100%`}}>Не удалось показать карту</div>;
   }
+
   componentDidMount() {
-    try {
-      const city = [52.38333, 4.9];
-
-      const icon = leaflet.icon({
-        iconUrl: `img/pin.svg`,
-        iconSize: [27, 39]
-      });
-
-      const zoomCity = 12;
-
-      const map = leaflet.map(`map`, {
-        center: city,
-        zoom: zoomCity,
+    const {city, places} = this.props;
+    setTimeout(() => {
+      const zoom = 12;
+      this.map = leaflet.map(`map`, {
+        center: city.coordinates,
+        [`zoom`]: zoom,
         zoomControl: false,
         marker: true
       });
-      map.setView(city, zoomCity);
+      this.map.setView(city.coordinates, zoom);
 
-      leaflet
-        .tileLayer(`https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`, {
-          attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
-        })
-        .addTo(map);
+      leaflet.tileLayer(
+          `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`,
+          {
+            attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> 
+            contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
+          }
+      ).addTo(this.map);
 
-      this.props.coords.forEach((coords) => {
-        leaflet
-          .marker(coords, {icon})
-          .addTo(map);
-      });
-      return true;
-    } catch (err) {
-      return false;
+      this.markersLayer = leaflet.layerGroup().addTo(this.map);
+      for (const place of places) {
+        leaflet.marker(place.coordinates, {icon: markerIcon}).addTo(this.markersLayer);
+      }
+    }, 10);
+  }
+
+  componentDidUpdate() {
+    if (this.map && this.markersLayer) {
+      const {city, places, activePlace} = this.props;
+      const center = activePlace ? activePlace.coordinates : city.coordinates;
+      this.map.panTo(center);
+
+      this.markersLayer.clearLayers();
+      for (const place of places) {
+        const icon = (activePlace && activePlace.id === place.id) ?
+          activeMarkerIcon : markerIcon;
+        leaflet.marker(place.coordinates, {icon}).addTo(this.markersLayer);
+      }
     }
+  }
+
+  componentWillUnmount() {
+    this.map.remove();
+    this.map = null;
   }
 }
 
 Map.propTypes = {
-  coords: PropTypes.array.isRequired,
+  places: PropTypes.arrayOf(
+      PropTypes.shape({
+        coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
+      })
+  ).isRequired,
+  city: PropTypes.shape({
+    coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
+  }),
+  activePlace: PropTypes.object
 };
+
+export default Map;
