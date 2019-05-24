@@ -5,12 +5,6 @@ import Card from "../card/card.jsx";
 export default class Noteboard extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      activeCard: null,
-    };
-  }
-  getData(data) {
-    this.setState({activeCard: data});
   }
   render() {
     return <div className="cities__places-list places__list tabs__content">
@@ -23,10 +17,10 @@ export default class Noteboard extends PureComponent {
         title={item.title}
         onClick={(evt) => {
           evt.preventDefault();
-          this.getData(item);
+          this.props.onClick(item);
         }}
         onMouseOver={() => {
-          this.getData(item);
+          this.props.onMouseOver(item);
         }}
       />)
       }

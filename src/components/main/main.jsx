@@ -7,6 +7,8 @@ import {ActionsCreator} from "../../reducers/reducer.js";
 import {selectCities} from "../../util/util.js";
 import {offers} from "../../mocks/offers.js";
 import {connect} from "react-redux";
+import withActiveItem from "../../hocs/with-active-item.js";
+const WrappedNoteboard = withActiveItem(Noteboard);
 
 const Main = (props) => {
   const {listOffers, cities, coordsOffers, currentCity, cityCoords, onChange} = props;
@@ -69,16 +71,21 @@ const Main = (props) => {
                 <option className="places__option" value="top-rated">Top rated first</option>
               </select>
             </form>
-            <Noteboard data={listOffers} />
+            <WrappedNoteboard data={listOffers} />
           </section>
           <div className="cities__right-section">
             <section className="cities__map map">
-              <Map places={coordsOffers} city={cityCoords}/>
+              <Map places={coordsOffers} city={cityCoords} />
             </section>
           </div>
         </div>
       </div>
     </main>
+    <footer className="footer">
+      <a className="footer__logo-link" href="main.html">
+        <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
+      </a>
+    </footer>
   </div>;
 };
 
