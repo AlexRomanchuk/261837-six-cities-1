@@ -1,5 +1,4 @@
 import React, {PureComponent} from "react";
-import PropTypes from "prop-types";
 
 const withActiveItem = (Component) => {
   class WrappedNoteboard extends PureComponent {

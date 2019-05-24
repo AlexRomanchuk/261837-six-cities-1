@@ -37,10 +37,20 @@ const mockOffers = [
   }
 ];
 
+const onClick = () => {
+  return true;
+};
+
+const onMouseOver = () => {
+  return true;
+};
+
 it(`correct renders noteboard page`, () => {
   const tree = renderer
     .create(<Noteboard
       data={mockOffers}
+      onClick={onClick}
+      onMouseOver={onMouseOver}
     />)
     .toJSON();
   expect(tree).toMatchSnapshot();

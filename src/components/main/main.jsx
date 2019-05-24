@@ -8,6 +8,7 @@ import {selectCities} from "../../util/util.js";
 import {offers} from "../../mocks/offers.js";
 import {connect} from "react-redux";
 import withActiveItem from "../../hocs/with-active-item.js";
+
 const WrappedNoteboard = withActiveItem(Noteboard);
 
 const Main = (props) => {

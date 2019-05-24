@@ -672,5 +672,21 @@ exports[`correct renders main page 1`] = `
       </div>
     </div>
   </main>
+  <footer
+    className="footer"
+  >
+    <a
+      className="footer__logo-link"
+      href="main.html"
+    >
+      <img
+        alt="6 cities logo"
+        className="footer__logo"
+        height="33"
+        src="img/logo.svg"
+        width="64"
+      />
+    </a>
+  </footer>
 </div>
 `;
