@@ -6,6 +6,8 @@ import Card from "../card/card.jsx";
 Enzyme.configure({adapter: new Adapter()});
 
 const mockOffer = {
+  id: 1,
+  isPremium: false,
   src: `img/apartment-01.jpg`,
   price: 120,
   type: `Apartment`,
@@ -16,11 +18,7 @@ const mockOffer = {
 it(`correct click handler on one card title`, () => {
   let data = {};
   const card = mount(<Card
-    src={mockOffer.src}
-    type={mockOffer.type}
-    price={mockOffer.price}
-    rating={mockOffer.rating}
-    title={mockOffer.title}
+    place={mockOffer}
     onClick={(evt) => {
       evt.preventDefault();
       data = mockOffer;

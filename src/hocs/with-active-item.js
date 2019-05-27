@@ -14,6 +14,7 @@ const withActiveItem = (Component) => {
     render() {
       return <Component
         {...this.props}
+        activePlace={this.state}
         onClick={(data) => {
           this.getData(data);
         }}
