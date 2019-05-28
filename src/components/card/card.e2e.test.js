@@ -23,9 +23,6 @@ it(`correct click handler on one card title`, () => {
       evt.preventDefault();
       data = mockOffer;
     }}
-    onMouseOver={() => {
-      data = mockOffer;
-    }}
   />);
 
   const headerLink = card.find(`.place-card__image-wrapper a`);

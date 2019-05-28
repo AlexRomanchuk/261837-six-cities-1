@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Noteboard from "../noteboard/noteboard.jsx";
-import Map from "../map/map.jsx";
 import Cities from "../cities/cities.jsx";
 import {ActionsCreator} from "../../reducers/reducer.js";
 import {selectCities} from "../../util/util.js";

@@ -19,9 +19,6 @@ it(`correct renders card page`, () => {
       onClick={(evt) => {
         evt.preventDefault();
       }}
-      onMouseOver={(evt) => {
-        evt.preventDefault();
-      }}
     />)
     .toJSON();
   expect(tree).toMatchSnapshot();

@@ -174,7 +174,7 @@ exports[`correct renders main page 1`] = `
              places to stay in 
             Amsterdam
           </b>
-          <form
+          <div
             action="#"
             className="places__sorting"
             method="get"
@@ -182,10 +182,11 @@ exports[`correct renders main page 1`] = `
             <span
               className="places__sorting-caption"
             >
-              Sort by
+              Sort by 
             </span>
             <span
               className="places__sorting-type"
+              onClick={[Function]}
               tabIndex="0"
             >
               Popular
@@ -200,71 +201,52 @@ exports[`correct renders main page 1`] = `
               </svg>
             </span>
             <ul
-              className="places__options places__options--custom places__options--opened"
+              className="places__options places__options--custom "
+              onClick={[Function]}
             >
               <li
                 className="places__option places__option--active"
+                onClick={[Function]}
                 tabIndex="0"
               >
                 Popular
               </li>
               <li
-                className="places__option"
+                className="places__option "
+                onClick={[Function]}
                 tabIndex="0"
               >
                 Price: low to high
               </li>
               <li
-                className="places__option"
+                className="places__option "
+                onClick={[Function]}
                 tabIndex="0"
               >
                 Price: high to low
               </li>
               <li
-                className="places__option"
+                className="places__option "
+                onClick={[Function]}
                 tabIndex="0"
               >
                 Top rated first
               </li>
             </ul>
-            <select
-              className="places__sorting-type"
-              defaultValue="popular"
-              id="places-sorting"
-            >
-              <option
-                className="places__option"
-                value="popular"
-              >
-                Popular
-              </option>
-              <option
-                className="places__option"
-                value="to-high"
-              >
-                Price: low to high
-              </option>
-              <option
-                className="places__option"
-                value="to-low"
-              >
-                Price: high to low
-              </option>
-              <option
-                className="places__option"
-                value="top-rated"
-              >
-                Top rated first
-              </option>
-            </select>
-          </form>
+          </div>
           <div
             className="cities__places-list places__list tabs__content"
           >
             <article
               className="cities__place-card place-card"
-              onMouseOver={[Function]}
             >
+              <div
+                className="place-card__mark"
+              >
+                <span>
+                  Premium
+                </span>
+              </div>
               <div
                 className="cities__image-wrapper place-card__image-wrapper"
               >
@@ -360,8 +342,14 @@ exports[`correct renders main page 1`] = `
             </article>
             <article
               className="cities__place-card place-card"
-              onMouseOver={[Function]}
             >
+              <div
+                className="place-card__mark"
+              >
+                <span>
+                  Premium
+                </span>
+              </div>
               <div
                 className="cities__image-wrapper place-card__image-wrapper"
               >
@@ -457,7 +445,6 @@ exports[`correct renders main page 1`] = `
             </article>
             <article
               className="cities__place-card place-card"
-              onMouseOver={[Function]}
             >
               <div
                 className="cities__image-wrapper place-card__image-wrapper"
@@ -554,7 +541,6 @@ exports[`correct renders main page 1`] = `
             </article>
             <article
               className="cities__place-card place-card"
-              onMouseOver={[Function]}
             >
               <div
                 className="cities__image-wrapper place-card__image-wrapper"
@@ -654,20 +640,17 @@ exports[`correct renders main page 1`] = `
         <div
           className="cities__right-section"
         >
-          <section
-            className="cities__map map"
-          >
-            <div
-              id="map"
-              style={
-                Object {
-                  "height": "100%",
-                }
+          <div
+            id="map"
+            style={
+              Object {
+                "height": "100%",
+                "width": "100%",
               }
-            >
-              Не удалось показать карту
-            </div>
-          </section>
+            }
+          >
+            Не удалось показать карту
+          </div>
         </div>
       </div>
     </div>

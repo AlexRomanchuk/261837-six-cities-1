@@ -13,7 +13,6 @@ const Noteboard = (props) => {
     places,
     activePlace,
     onClick,
-    onMouseOver,
     onSortClick,
     onOpenSortClick
   } = props;
@@ -43,38 +42,38 @@ const Noteboard = (props) => {
     <div className="cities__places-container container">
       <section className="cities__places places">
         <h2 className="visually-hidden">Places</h2>
-          <b className="places__found">{sortedPlaces.length} places to stay in {city}</b>
-          <div className="places__sorting" action="#" method="get">
-            <span className="places__sorting-caption">Sort by&nbsp;</span>
-            <span className="places__sorting-type" tabIndex="0" onClick={onOpenSortClick}>
-              {activeParameter.name}
-              <svg className="places__sorting-arrow" width="7" height="4">
-                <use xlinkHref="#icon-arrow-select"></use>
-              </svg>
-            </span>
-            <ul
-              className={`places__options places__options--custom ${isSortOpen ? `places__options--opened` : ``}`}
-              onClick={onOpenSortClick}
-            >
-              {parameters.map((parameter) => {
-                return <li
-                  className={`places__option ${parameter === activeParameter ? `places__option--active` : ``}`}
-                  tabIndex="0"
-                  key={parameter.name}
-                  onClick={() => onSortClick(parameter)}
-                >{parameter.name}</li>;
-              })}
-            </ul>
-          </div>
-          <div className="cities__places-list places__list tabs__content">
-            {sortedPlaces.map((item, i) => <Card
-              key={i}
-              place={item}
-              onClick={(evt) => {
-                evt.preventDefault();
-                onClick(item);
-              }}
-            />)}
+        <b className="places__found">{sortedPlaces.length} places to stay in {city}</b>
+        <div className="places__sorting" action="#" method="get">
+          <span className="places__sorting-caption">Sort by&nbsp;</span>
+          <span className="places__sorting-type" tabIndex="0" onClick={onOpenSortClick}>
+            {activeParameter.name}
+            <svg className="places__sorting-arrow" width="7" height="4">
+              <use xlinkHref="#icon-arrow-select"></use>
+            </svg>
+          </span>
+          <ul
+            className={`places__options places__options--custom ${isSortOpen ? `places__options--opened` : ``}`}
+            onClick={onOpenSortClick}
+          >
+            {parameters.map((parameter) => {
+              return <li
+                className={`places__option ${parameter === activeParameter ? `places__option--active` : ``}`}
+                tabIndex="0"
+                key={parameter.name}
+                onClick={() => onSortClick(parameter)}
+              >{parameter.name}</li>;
+            })}
+          </ul>
+        </div>
+        <div className="cities__places-list places__list tabs__content">
+          {sortedPlaces.map((item, i) => <Card
+            key={i}
+            place={item}
+            onClick={(evt) => {
+              evt.preventDefault();
+              onClick(item);
+            }}
+          />)}
         </div>
       </section>
       <div className="cities__right-section">
@@ -90,10 +89,22 @@ const Noteboard = (props) => {
 
 Noteboard.propTypes = {
   places: PropTypes.array.isRequired,
-  city: PropTypes.string.isRequired,
   cityCoords: PropTypes.object.isRequired,
+  city: PropTypes.string.isRequired,
+  activePlace: PropTypes.object,
   onClick: PropTypes.func.isRequired,
-  onMouseOver: PropTypes.func.isRequired,
+  isSortOpen: PropTypes.bool.isRequired,
+  onOpenSortClick: PropTypes.func.isRequired,
+  activeParameter: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    action: PropTypes.func,
+  }).isRequired,
+  parameters: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    action: PropTypes.func,
+  }).isRequired).isRequired,
+  onSortClick: PropTypes.func.isRequired,
 };
+
 
 export default Noteboard;
