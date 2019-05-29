@@ -14,7 +14,7 @@ const activeMarkerIcon = leaflet.icon({
 
 class Map extends PureComponent {
   render() {
-    return <div id="map" style={{height: `100%`}}>Не удалось показать карту</div>;
+    return <div id="map" style={{width: `100%`, height: `100%`}}>Не удалось показать карту</div>;
   }
 
   componentDidMount() {
@@ -32,7 +32,7 @@ class Map extends PureComponent {
       leaflet.tileLayer(
           `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`,
           {
-            attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> 
+            attribution: `&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>
             contributors &copy; <a href="https://carto.com/attributions">CARTO</a>`
           }
       ).addTo(this.map);
