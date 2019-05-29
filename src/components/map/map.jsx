@@ -41,7 +41,7 @@ class Map extends PureComponent {
       for (const place of places) {
         leaflet.marker(place.coordinates, {icon: markerIcon}).addTo(this.markersLayer);
       }
-    }, 10);
+    }, 50);
   }
 
   componentDidUpdate() {
