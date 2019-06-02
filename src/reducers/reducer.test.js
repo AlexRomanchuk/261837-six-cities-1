@@ -1,4 +1,8 @@
 import {reducer} from "../reducers/reducer.js";
+import MockAdapter from "axios-mock-adapter";
+import configureAPI from "../api.js";
+const dispatch = jest.fn();
+const api = configureAPI((...args) => dispatch(...args));
 const initOffers = [
   {
     src: `img/apartment-01.jpg`,
@@ -29,7 +33,8 @@ const initOffers = [
 const initialState = {
   city: `Amsterdam`,
   coords: [52.38333, 4.9],
-  offers: initOffers
+  listOffers: initOffers,
+  currentCity: null
 };
 
 it(`correct change city`, () => {
@@ -37,4 +42,32 @@ it(`correct change city`, () => {
     type: `CHANGE_CITY`,
     payload: initialState
   }).city).toEqual(`Amsterdam`);
+});
+
+it(`correct select offer`, () => {
+  expect(reducer(initialState, {
+    type: `SELECT_CARD`,
+    payload: {
+      city: `Amsterdam`
+    }
+  }).currentCity).toEqual(null);
+});
+
+it(`correct load data`, () => {
+  const apiMock = new MockAdapter(api);
+
+  apiMock
+    .onGet(`/hotels`)
+    .reply(200, [{fake: true}]);
+
+  return api.get(`/hotels`)
+    .then(() => {
+      expect(dispatch).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: `LOAD_DATA_SUCCESSFUL`,
+        payload: {
+          offers: [{fake: true}]
+        }
+      });
+    });
 });

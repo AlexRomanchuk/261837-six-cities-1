@@ -11,7 +11,7 @@ const mockOffers = [
     isPremium: true,
     src: `img/apartment-01.jpg`,
     price: 120,
-    type: `Apartment`,
+    type: `apartment`,
     title: `Beautiful &amp; luxurious apartment at great location`,
     rating: 93,
     coordinates: [52.3909553943508, 4.85309666406198],
@@ -25,7 +25,7 @@ const mockOffers = [
     isPremium: true,
     src: `img/room.jpg`,
     price: 80,
-    type: `Private room`,
+    type: `room`,
     title: `Wood and stone place`,
     rating: 80,
     coordinates: [52.369553943508, 4.85309666406198],
@@ -39,7 +39,7 @@ const mockOffers = [
     isPremium: false,
     src: `img/apartment-02.jpg`,
     price: 132,
-    type: `Apartment`,
+    type: `apartment`,
     title: `Canal View Prinsengracht`,
     rating: 80,
     coordinates: [52.3909553943508, 4.929309666406198],
@@ -53,7 +53,7 @@ const mockOffers = [
     isPremium: false,
     src: `img/apartment-03.jpg`,
     price: 180,
-    type: `Hotel`,
+    type: `hotel`,
     title: `Nice, cozy, warm big bed apartment`,
     rating: 100,
     coordinates: [52.3809553943508, 4.939309666406198],
@@ -85,6 +85,7 @@ it(`correct click handler on card title`, () => {
     currentCity={currentCity}
     cityCoords={cityCoords}
     onChange={onChange}
+    onSelect={onChange}
   />);
 
   const headerLink = main.find(`.place-card__name a`);

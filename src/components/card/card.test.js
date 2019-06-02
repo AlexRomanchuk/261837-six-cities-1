@@ -4,12 +4,10 @@ import Card from "../card/card.jsx";
 
 const mockOffer = {
   id: 1,
-  isPremium: false,
-  src: `img/apartment-01.jpg`,
   price: 120,
-  type: `Apartment`,
+  type: `apartment`,
   title: `Beautiful &amp; luxurious apartment at great location`,
-  rating: 93
+  rating: 93,
 };
 
 it(`correct renders card page`, () => {
