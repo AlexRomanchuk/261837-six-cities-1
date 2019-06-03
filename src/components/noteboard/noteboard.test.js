@@ -8,41 +8,17 @@ const mockOffers = [
     isPremium: true,
     src: `img/apartment-01.jpg`,
     price: 120,
-    type: `Apartment`,
+    type: `apartment`,
     title: `Beautiful &amp; luxurious apartment at great location`,
     rating: 93,
-    coordinates: [52.3909553943508, 4.85309666406198],
+    location: {
+      coords: [52.3909553943508, 4.85309666406198],
+    },
     city: {
       name: `Amsterdam`,
-      coords: [52.38333, 4.9]
-    }
-  },
-  {
-    id: 2,
-    isPremium: true,
-    src: `img/room.jpg`,
-    price: 80,
-    type: `Private room`,
-    title: `Wood and stone place`,
-    rating: 80,
-    coordinates: [52.369553943508, 4.85309666406198],
-    city: {
-      name: `Amsterdam`,
-      coords: [52.38333, 4.9]
-    }
-  },
-  {
-    id: 3,
-    isPremium: false,
-    src: `img/apartment-02.jpg`,
-    price: 132,
-    type: `Apartment`,
-    title: `Canal View Prinsengracht`,
-    rating: 80,
-    coordinates: [52.3909553943508, 4.929309666406198],
-    city: {
-      name: `Amsterdam`,
-      coords: [52.38333, 4.9]
+      coords: {
+        coords: [52.38333, 4.9]
+      }
     }
   }
 ];
@@ -74,7 +50,9 @@ it(`correct renders noteboard page`, () => {
   const tree = renderer
     .create(<Noteboard
       city={`Amsterdam`}
-      cityCoords={{coordinates: [52.3809553943508, 4.939309666406198]}}
+      cityCoords={{coordinates: {
+        coords: [52.3809553943508, 4.939309666406198],
+      }}}
       isSortOpen={false}
       activeParameter={sortParameters[0]}
       parameters={sortParameters}
@@ -83,6 +61,7 @@ it(`correct renders noteboard page`, () => {
       onClick={onClick}
       onSortClick={onClick}
       onOpenSortClick={onClick}
+      onSelect={() => {}}
     />)
     .toJSON();
   expect(tree).toMatchSnapshot();

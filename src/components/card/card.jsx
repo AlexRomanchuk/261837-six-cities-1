@@ -7,12 +7,12 @@ const Card = (props) => {
     onClick
   } = props;
   return <article className="cities__place-card place-card">
-    {place.isPremium && (<div className="place-card__mark">
+    {place[`is_premium`] && (<div className="place-card__mark">
       <span>Premium</span>
     </div>)}
     <div className="cities__image-wrapper place-card__image-wrapper">
       <a href="#" onClick={onClick}>
-        <img className="place-card__image" src={place.src} width="260" height="200" alt="Place image" />
+        <img className="place-card__image" src={place[`preview_image`]} width="260" height="200" alt="Place image" />
       </a>
     </div>
     <div className="place-card__info">
@@ -30,7 +30,7 @@ const Card = (props) => {
       </div>
       <div className="place-card__rating rating">
         <div className="place-card__stars rating__stars">
-          <span style={{width: `${place.rating}%`}}></span>
+          <span style={{width: `${place.rating * 20}%`}}></span>
           <span className="visually-hidden">Rating</span>
         </div>
       </div>
@@ -45,12 +45,10 @@ const Card = (props) => {
 Card.propTypes = {
   place: PropTypes.shape({
     id: PropTypes.number.isRequired,
-    isPremium: PropTypes.bool.isRequired,
-    src: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     rating: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    type: PropTypes.oneOf([`Apartment`, `Private room`, `House`, `Hotel`]).isRequired,
+    type: PropTypes.oneOf([`apartment`, `room`, `house`, `hotel`]).isRequired,
   }).isRequired,
   onClick: PropTypes.func.isRequired
 };

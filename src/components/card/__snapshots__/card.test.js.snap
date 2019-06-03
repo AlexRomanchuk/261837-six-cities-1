@@ -15,7 +15,6 @@ exports[`correct renders card page 1`] = `
         alt="Place image"
         className="place-card__image"
         height="200"
-        src="img/apartment-01.jpg"
         width="260"
       />
     </a>
@@ -70,7 +69,7 @@ exports[`correct renders card page 1`] = `
         <span
           style={
             Object {
-              "width": "93%",
+              "width": "1860%",
             }
           }
         />
@@ -93,7 +92,7 @@ exports[`correct renders card page 1`] = `
     <p
       className="place-card__type"
     >
-      Apartment
+      apartment
     </p>
   </div>
 </article>

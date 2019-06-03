@@ -14,13 +14,46 @@ const Noteboard = (props) => {
     activePlace,
     onClick,
     onSortClick,
-    onOpenSortClick
+    onOpenSortClick,
+    isLoadingFailed,
+    isLoading
   } = props;
 
   let sortedPlaces = [...places];
 
   if (activeParameter.action) {
     sortedPlaces = sortedPlaces.sort(activeParameter.action);
+  }
+
+  if (isLoading) {
+    return <div className="cities__places-wrapper">
+      <div className="cities__places-container container">
+        <section className="cities__places places">
+          <div className="cities__status-wrapper tabs__content">
+            <b className="cities__status">Loading...</b>
+            <p className="cities__status-description">Data is loading from server.</p>
+          </div>
+        </section>
+        <div className="cities__right-section">
+          <section className="cities__map map"></section>
+        </div>
+      </div>
+    </div>;
+  }
+
+  if (isLoadingFailed) {
+    return <div className="cities__places-wrapper">
+      <div className="cities__places-container cities__places-container--empty container">
+        <section className="cities__no-places">
+          <div className="cities__status-wrapper tabs__content">
+            <b className="cities__status">Server is not avaiable</b>
+          </div>
+        </section>
+        <div className="cities__right-section">
+          <section className="cities__map map"></section>
+        </div>
+      </div>
+    </div>;
   }
 
   if (!sortedPlaces.length) {
@@ -33,6 +66,7 @@ const Noteboard = (props) => {
           </div>
         </section>
         <div className="cities__right-section">
+          <section className="cities__map map"></section>
         </div>
       </div>
     </div>;
@@ -77,11 +111,13 @@ const Noteboard = (props) => {
         </div>
       </section>
       <div className="cities__right-section">
-        <Map
-          city={cityCoords}
-          places={sortedPlaces}
-          activePlace={activePlace.activeCard}
-        />
+        <section className="cities__map map">
+          <Map
+            city={cityCoords}
+            places={sortedPlaces}
+            activePlace={activePlace}
+          />
+        </section>
       </div>
     </div>
   </div>;
@@ -90,9 +126,10 @@ const Noteboard = (props) => {
 Noteboard.propTypes = {
   places: PropTypes.array.isRequired,
   cityCoords: PropTypes.object.isRequired,
-  city: PropTypes.string.isRequired,
+  city: PropTypes.string,
   activePlace: PropTypes.object,
   onClick: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
   isSortOpen: PropTypes.bool.isRequired,
   onOpenSortClick: PropTypes.func.isRequired,
   activeParameter: PropTypes.shape({
@@ -104,6 +141,8 @@ Noteboard.propTypes = {
     action: PropTypes.func,
   }).isRequired).isRequired,
   onSortClick: PropTypes.func.isRequired,
+  isLoadingFailed: PropTypes.bool,
+  isLoading: PropTypes.bool,
 };
 
 

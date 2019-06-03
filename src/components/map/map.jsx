@@ -20,14 +20,14 @@ class Map extends PureComponent {
   componentDidMount() {
     const {city, places} = this.props;
     setTimeout(() => {
-      const zoom = 12;
+      const zoom = city.coordinates.zoom;
       this.map = leaflet.map(`map`, {
-        center: city.coordinates,
+        center: [city.coordinates.latitude, city.coordinates.longitude],
         [`zoom`]: zoom,
         zoomControl: false,
         marker: true
       });
-      this.map.setView(city.coordinates, zoom);
+      this.map.setView([city.coordinates.latitude, city.coordinates.longitude], zoom);
 
       leaflet.tileLayer(
           `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`,
@@ -39,22 +39,23 @@ class Map extends PureComponent {
 
       this.markersLayer = leaflet.layerGroup().addTo(this.map);
       for (const place of places) {
-        leaflet.marker(place.coordinates, {icon: markerIcon}).addTo(this.markersLayer);
+        leaflet.marker([place.location.latitude, place.location.longitude], {icon: markerIcon}).addTo(this.markersLayer);
       }
-    }, 10);
+    }, 50);
   }
 
   componentDidUpdate() {
     if (this.map && this.markersLayer) {
       const {city, places, activePlace} = this.props;
-      const center = activePlace ? activePlace.coordinates : city.coordinates;
+      const center = activePlace ? [activePlace.location.latitude, activePlace.location.longitude] : [city.coordinates.latitude, city.coordinates.longitude];
+      const zoom = activePlace ? activePlace.location.zoom : city.coordinates.zoom;
       this.map.panTo(center);
-
+      this.map.setView(center, zoom);
       this.markersLayer.clearLayers();
       for (const place of places) {
         const icon = (activePlace && activePlace.id === place.id) ?
           activeMarkerIcon : markerIcon;
-        leaflet.marker(place.coordinates, {icon}).addTo(this.markersLayer);
+        leaflet.marker([place.location.latitude, place.location.longitude], {icon}).addTo(this.markersLayer);
       }
     }
   }
@@ -68,11 +69,11 @@ class Map extends PureComponent {
 Map.propTypes = {
   places: PropTypes.arrayOf(
       PropTypes.shape({
-        coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
+        location: PropTypes.object.isRequired,
       })
   ).isRequired,
   city: PropTypes.shape({
-    coordinates: PropTypes.arrayOf(PropTypes.number).isRequired,
+    coordinates: PropTypes.object.isRequired,
   }),
   activePlace: PropTypes.object
 };
