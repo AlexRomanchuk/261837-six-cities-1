@@ -1,5 +1,5 @@
-import React, {PureComponent} from 'react';
-import leaflet from 'leaflet';
+import React, {PureComponent} from "react";
+import leaflet from "leaflet";
 import PropTypes from "prop-types";
 
 const markerIcon = leaflet.icon({

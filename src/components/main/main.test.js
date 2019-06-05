@@ -34,11 +34,7 @@ const cityCoords = {
   }
 };
 
-const onChange = () => {
-  return true;
-};
-
-const onSelect = () => {
+const fakeCallback = () => {
   return true;
 };
 
@@ -48,9 +44,11 @@ it(`correct renders main page`, () => {
       listOffers={mockOffers}
       cities={cities}
       currentCity={currentCity}
-      onChange={onChange}
+      onChange={fakeCallback}
       cityCoords={cityCoords}
-      onSelect={onSelect}
+      onSelect={fakeCallback}
+      onSubmitForm={fakeCallback}
+      onProfileClick={fakeCallback}
     />)
     .toJSON();
   expect(tree).toMatchSnapshot();

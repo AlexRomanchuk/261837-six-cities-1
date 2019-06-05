@@ -1,8 +1,8 @@
-import {reducer} from "../reducers/reducer.js";
+import {reducer, loadData, authorizeUser} from "../reducers/reducer.js";
 import MockAdapter from "axios-mock-adapter";
 import configureAPI from "../api.js";
 const dispatch = jest.fn();
-const api = configureAPI((...args) => dispatch(...args));
+const api = configureAPI();
 const initOffers = [
   {
     src: `img/apartment-01.jpg`,
@@ -34,7 +34,9 @@ const initialState = {
   city: `Amsterdam`,
   coords: [52.38333, 4.9],
   listOffers: initOffers,
-  currentCity: null
+  currentCity: null,
+  user: null,
+  isAuthorizationRequired: false,
 };
 
 it(`correct change city`, () => {
@@ -42,6 +44,20 @@ it(`correct change city`, () => {
     type: `CHANGE_CITY`,
     payload: initialState
   }).city).toEqual(`Amsterdam`);
+});
+
+it(`correct register`, () => {
+  expect(reducer(initialState, {
+    type: `REGISTER`,
+    payload: `New User`
+  }).user).toEqual(`New User`);
+});
+
+it(`correct check authorization`, () => {
+  expect(reducer(initialState, {
+    type: `REQUIRE_AUTH`,
+    payload: false
+  }).isAuthorizationRequired).toEqual(false);
 });
 
 it(`correct select offer`, () => {
@@ -60,13 +76,74 @@ it(`correct load data`, () => {
     .onGet(`/hotels`)
     .reply(200, [{fake: true}]);
 
-  return api.get(`/hotels`)
+  return loadData(`/hotels`)(dispatch, jest.fn(), api)
     .then(() => {
       expect(dispatch).toHaveBeenCalledTimes(1);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
         type: `LOAD_DATA_SUCCESSFUL`,
         payload: {
           offers: [{fake: true}]
+        }
+      });
+    })
+    .catch(() => {});
+});
+
+it(`correct handle error load data`, () => {
+  const apiMock = new MockAdapter(api);
+
+  apiMock
+    .onGet(`/hotel`)
+    .reply(404, [{fake: true}]);
+
+  return loadData(`/hotel`)(dispatch, jest.fn(), api)
+    .then(() => {})
+    .catch(() => {
+      expect(dispatch).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: `LOAD_DATA_FAILURE`,
+        payload: {
+          offers: null
+        }
+      });
+    });
+});
+
+it(`correct authorization`, () => {
+  const apiMock = new MockAdapter(api);
+
+  apiMock
+    .onPost(`/login`)
+    .reply(200, [{fake: true}]);
+
+  return authorizeUser(`aaa@post.ru`, `pwd`)(dispatch, jest.fn(), api)
+    .then(() => {
+      expect(dispatch).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: `REGISTER`,
+        payload: {
+          user: [{fake: true}]
+        }
+      });
+    })
+    .catch(() => {});
+});
+
+it(`correct handle error authorization`, () => {
+  const apiMock = new MockAdapter(api);
+
+  apiMock
+    .onPost(`/login`)
+    .reply(400, [{fake: true}]);
+
+  return authorizeUser(null, `hotel`)(dispatch, jest.fn(), api)
+    .then(() => {})
+    .catch(() => {
+      expect(dispatch).toHaveBeenCalledTimes(1);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: `HANDLE_ERROR_AUTORIZE`,
+        payload: {
+          user: null
         }
       });
     });

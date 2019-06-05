@@ -73,7 +73,7 @@ const cityCoords = {
   coordinates: [52.3809553943508, 4.939309666406198]
 };
 
-const onChange = () => {
+const fakeCallback = () => {
   return true;
 };
 
@@ -84,8 +84,10 @@ it(`correct click handler on card title`, () => {
     cities={cities}
     currentCity={currentCity}
     cityCoords={cityCoords}
-    onChange={onChange}
-    onSelect={onChange}
+    onChange={fakeCallback}
+    onSelect={fakeCallback}
+    onSubmitForm={fakeCallback}
+    onProfileClick={fakeCallback}
   />);
 
   const headerLink = main.find(`.place-card__name a`);
