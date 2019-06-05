@@ -4,9 +4,9 @@ import thunk from "redux-thunk";
 import Main from "./components/main/main.jsx";
 import {Provider} from "react-redux";
 import {createStore, applyMiddleware} from "redux";
-import {reducer} from "./reducers/reducer.js";
+import {reducer, loadData} from "./reducers/reducer.js";
 import configureAPI from "./api.js";
-const api = configureAPI((...args) => store.dispatch(...args));
+const api = configureAPI();
 
 /* eslint-disable no-underscore-dangle */
 const store = createStore(
@@ -14,7 +14,7 @@ const store = createStore(
     applyMiddleware(thunk.withExtraArgument(api))
 );
 /* eslint-enable */
-api.get(`/hotels`);
+store.dispatch(loadData(`/hotels`));
 
 const init = () => {
   ReactDOM.render(

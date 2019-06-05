@@ -6,7 +6,11 @@ export const initialState = {
   city: null,
   activeCard: null,
   isLoadingFailed: false,
-  isLoading: true
+  isLoading: true,
+  isAuthorizationRequired: false,
+  error: null,
+  autorizationError: null,
+  user: null,
 };
 
 export const ActionsCreator = {
@@ -27,9 +31,10 @@ export const ActionsCreator = {
       }
     };
   },
-  "DATA_LOAD_FAILURE": () => {
+  "LOAD_DATA_FAILURE": (err) => {
     return {
-      type: `DATA_LOAD_FAILURE`
+      type: `LOAD_DATA_FAILURE`,
+      payload: err
     };
   },
   "SELECT_CARD": (data) => {
@@ -37,7 +42,52 @@ export const ActionsCreator = {
       type: `SELECT_CARD`,
       payload: data
     };
-  }
+  },
+  "REQUIRE_AUTH": (isRegistered) => {
+    return {
+      type: `REQUIRE_AUTH`,
+      payload: isRegistered
+    };
+  },
+  "REGISTER": (data) => {
+    return {
+      type: `REGISTER`,
+      payload: data
+    };
+  },
+  "HANDLE_ERROR_AUTORIZE": (err) => {
+    return {
+      type: `HANDLE_ERROR_AUTORIZE`,
+      payload: err
+    };
+  },
+};
+
+export const loadData = (path) => (dispatch, _getState, api) => {
+  return api.get(path)
+    .then((response) => {
+      if (response.status === 200) {
+        dispatch(ActionsCreator[`LOAD_DATA_SUCCESSFUL`](response.data));
+      }
+    })
+    .catch((error) => {
+      if (error.response.status === 403) {
+        dispatch(ActionsCreator[`REQUIRE_AUTH`](true));
+      } else {
+        dispatch(ActionsCreator[`LOAD_DATA_FAILURE`](error));
+      }
+      return error;
+    });
+};
+
+export const authorizeUser = (email, password) => (dispatch, _getState, api) => {
+  return api.post(`/login`, {email, password})
+    .then((response) => {
+      dispatch(ActionsCreator[`REGISTER`](response.data));
+    })
+    .catch((error) => {
+      dispatch(ActionsCreator[`HANDLE_ERROR_AUTORIZE`](error.response));
+    });
 };
 
 export const reducer = (state = initialState, action) => {
@@ -50,13 +100,26 @@ export const reducer = (state = initialState, action) => {
     });
     case `LOAD_DATA_SUCCESSFUL`: return Object.assign({}, state, {
       listOffers: action.payload.offers,
-      isLoading: false
+      isLoading: false,
     });
     case `LOAD_DATA_FAILURE`: return Object.assign({}, state, {
       isLoadingFailed: true,
+      isLoading: false,
+      error: action.payload,
     });
     case `SELECT_CARD`: return Object.assign({}, state, {
       activeCard: action.payload,
+    });
+    case `REQUIRE_AUTH`: return Object.assign({}, state, {
+      isAuthorizationRequired: action.payload,
+    });
+    case `HANDLE_ERROR_AUTORIZE`: return Object.assign({}, state, {
+      isAuthorizationRequired: true,
+      autorizationError: action.payload,
+    });
+    case `REGISTER`: return Object.assign({}, state, {
+      isAuthorizationRequired: false,
+      user: action.payload,
     });
     default: return state;
   }
