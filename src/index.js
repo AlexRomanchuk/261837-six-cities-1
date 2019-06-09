@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import thunk from "redux-thunk";
 import Main from "./components/main/main.jsx";
+import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import {createStore, applyMiddleware} from "redux";
 import {reducer, loadData} from "./reducers/reducer.js";
@@ -19,7 +20,9 @@ store.dispatch(loadData(`/hotels`));
 const init = () => {
   ReactDOM.render(
       <Provider store={store}>
-        <Main />
+        <BrowserRouter>
+          <Main />
+        </BrowserRouter>
       </Provider>,
       document.querySelector(`#root`)
   );

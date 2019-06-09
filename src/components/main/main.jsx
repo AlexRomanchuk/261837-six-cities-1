@@ -1,10 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Noteboard from "../noteboard/noteboard.jsx";
+import Loading from "../loading/loading.jsx";
+import Property from "../property/property.jsx";
 import Login from "../login/login.jsx";
 import Cities from "../cities/cities.jsx";
+import Favorites from "../Favorites/Favorites.jsx";
 import {ActionsCreator, authorizeUser} from "../../reducers/reducer.js";
 import {selectCities} from "../../util/util.js";
+import {Switch, Route, Link, Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import withActiveItem from "../../hocs/with-active-item.js";
 import withSortOpen from "../../hocs/with-sort-open.js";
@@ -30,11 +34,14 @@ const Main = (props) => {
     autorizationError,
     user,
     error,
-    onProfileClick,
   } = props;
 
+  const PreparedLoginPage = () => {
+    return <WrappedLogin onSubmitForm={onSubmitForm} autorizationError={autorizationError} user={user} />;
+  };
+
   if (isAuthorizationRequired) {
-    return <WrappedLogin onSubmitForm={onSubmitForm} autorizationError={autorizationError} />;
+    return <Redirect to="/login" />
   }
 
   return <div>
@@ -46,25 +53,22 @@ const Main = (props) => {
       <div className="container">
         <div className="header__wrapper">
           <div className="header__left">
-            <a className="header__logo-link header__logo-link--active">
+            <Link className="header__logo-link header__logo-link--active" to="/">
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-            </a>
+            </Link>
           </div>
           <nav className="header__nav">
             <ul className="header__nav-list">
               <li className="header__nav-item user">
                 {user ?
-                  <a href="#" className="header__nav-link header__nav-link--profile">
+                  <Link to="/favorites" className="header__nav-link header__nav-link--profile">
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">{user.email}</span>
-                  </a> :
-                  <a href="#" className="header__nav-link header__nav-link--profile" onClick={(evt) => {
-                    evt.preventDefault();
-                    onProfileClick(!isAuthorizationRequired);
-                  }}>
+                  </Link > :
+                  <Link to="/login" className="header__nav-link header__nav-link--profile">
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__login">Sign in</span>
-                  </a>
+                  </Link>
                 }
               </li>
             </ul>
@@ -72,27 +76,36 @@ const Main = (props) => {
         </div>
       </div>
     </header>
+    <Switch>
+      <Route path="/" exact render={() => isLoading ? <Loading /> :
+        <main className="page__main page__main--index">
+          <h1 className="visually-hidden">Cities</h1>
+          <div className="cities tabs">
+            <Cities data={cities} currentCity={currentCity} onChange={onChange} />
+          </div>
+          <WrappedNoteboard
+            activePlace={activePlace}
+            places={listOffers}
+            city={currentCity}
+            cityCoords={cityCoords}
+            isLoadingFailed={isLoadingFailed}
+            error={error}
+            isLoading={isLoading}
+            onSelect={onSelect}
+          />
+        </main>
+      }/>
+      <Route path="/login" component={PreparedLoginPage} />
+      <Route path="/favorites" component={Favorites} />
+      {listOffers.map((item, i) => {
+        return <Route exact path={`/offer/${item.id}`} render={() => <Property offer={item} />} key={i} />;
+      })}
+    </Switch>
 
-    <main className="page__main page__main--index">
-      <h1 className="visually-hidden">Cities</h1>
-      <div className="cities tabs">
-        <Cities data={cities} currentCity={currentCity} onChange={onChange} />
-      </div>
-      <WrappedNoteboard
-        activePlace={activePlace}
-        places={listOffers}
-        city={currentCity}
-        cityCoords={cityCoords}
-        isLoadingFailed={isLoadingFailed}
-        error={error}
-        isLoading={isLoading}
-        onSelect={onSelect}
-      />
-    </main>
     <footer className="footer">
-      <a className="footer__logo-link" href="main.html">
+      <Link className="footer__logo-link" to="/">
         <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
-      </a>
+      </Link>
     </footer>
   </div>;
 };
@@ -104,7 +117,6 @@ Main.propTypes = {
   onChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   onSubmitForm: PropTypes.func.isRequired,
-  onProfileClick: PropTypes.func.isRequired,
   currentCity: PropTypes.string,
   isLoadingFailed: PropTypes.bool,
   isLoading: PropTypes.bool,
@@ -166,9 +178,6 @@ const mapDispatchToProps = (dispatch) => ({
   onSubmitForm: (formData) => {
     dispatch(authorizeUser(formData.email, formData.password));
   },
-  onProfileClick: (isRegistered) => {
-    dispatch(ActionsCreator[`REQUIRE_AUTH`](isRegistered));
-  }
 });
 
 export {Main};

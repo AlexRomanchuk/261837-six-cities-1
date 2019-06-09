@@ -3,10 +3,12 @@ import {selectCities} from "../util/util.js";
 export const initialState = {
   listOffers: [],
   filteredPlaces: [],
+  favoritePlaces: [],
   city: null,
   activeCard: null,
   isLoadingFailed: false,
   isLoading: true,
+  isFavoritesLoaded: false,
   isAuthorizationRequired: false,
   error: null,
   autorizationError: null,
@@ -37,6 +39,20 @@ export const ActionsCreator = {
       payload: err
     };
   },
+  "LOAD_FAVORITES_SUCCESSFUL": (data) => {
+    return {
+      type: `LOAD_FAVORITES_SUCCESSFUL`,
+      payload: {
+        offers: data,
+      }
+    };
+  },
+  "LOAD_FAVORITES_FAILURE": (err) => {
+    return {
+      type: `LOAD_FAVORITES_FAILURE`,
+      payload: err
+    };
+  },
   "SELECT_CARD": (data) => {
     return {
       type: `SELECT_CARD`,
@@ -63,10 +79,38 @@ export const ActionsCreator = {
   },
 };
 
+export const loadFavorites = () => (dispatch, _getState, api) => {
+  return api.get(`/favorite`)
+    .then((response) => {
+      const favorites = response.data;
+      dispatch(ActionsCreator[`LOAD_FAVORITES_SUCCESSFUL`](favorites));
+    })
+    .catch((error) => {
+      if (error.response.status === 403) {
+        dispatch(ActionsCreator[`REQUIRE_AUTH`](true));
+      } else {
+        dispatch(ActionsCreator[`LOAD_FAVORITES_FAILURE`](error));
+      }
+    });
+};
+
+export const changeFavorites = (place) => (dispatch, _getState, api) => {
+  const id = place.id;
+  const status = place.isFavorite ? `0` : `1`;
+  return api.post(`/favorite/${id}/${status}`)
+    .then((response) => {
+      const offer = response.data;
+      dispatch(OffersActionCreator.updateOffer(offer));
+    })
+    .catch(() => {
+    });
+};
+
 export const loadData = (path) => (dispatch, _getState, api) => {
   return api.get(path)
     .then((response) => {
       if (response.status === 200) {
+        console.log(response.data);
         dispatch(ActionsCreator[`LOAD_DATA_SUCCESSFUL`](response.data));
       }
     })
@@ -103,6 +147,15 @@ export const reducer = (state = initialState, action) => {
       isLoading: false,
     });
     case `LOAD_DATA_FAILURE`: return Object.assign({}, state, {
+      isLoadingFailed: true,
+      isLoading: false,
+      error: action.payload,
+    });
+    case `LOAD_FAVORITES_SUCCESSFUL`: return Object.assign({}, state, {
+      favoritePlaces: action.payload.offers,
+      isFavoritesLoaded: true,
+    });
+    case `LOAD_FAVORITES_FAILURE`: return Object.assign({}, state, {
       isLoadingFailed: true,
       isLoading: false,
       error: action.payload,
