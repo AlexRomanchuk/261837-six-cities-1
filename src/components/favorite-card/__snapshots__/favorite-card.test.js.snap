@@ -1,34 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`correct renders card page 1`] = `
+exports[`FavoriteCard snapshot 1`] = `
 <article
-  className="cities__place-card place-card"
+  className="favorites__card place-card"
 >
   <div
-    className="place-card__mark"
-  >
-    <span>
-      Premium
-    </span>
-  </div>
-  <div
-    className="cities__image-wrapper place-card__image-wrapper"
+    className="favorites__image-wrapper place-card__image-wrapper"
   >
     <a
-      href="#"
+      href="/offer/999"
       onClick={[Function]}
     >
       <img
         alt="Place image"
         className="place-card__image"
-        height="200"
-        src="url"
-        width="260"
+        height="110"
+        src=""
+        width="150"
       />
     </a>
   </div>
   <div
-    className="place-card__info"
+    className="favorites__card-info place-card__info"
   >
     <div
       className="place-card__price-wrapper"
@@ -40,7 +33,7 @@ exports[`correct renders card page 1`] = `
           className="place-card__price-value"
         >
           €
-          120
+          111
         </b>
         <span
           className="place-card__price-text"
@@ -49,7 +42,7 @@ exports[`correct renders card page 1`] = `
         </span>
       </div>
       <button
-        className="place-card__bookmark-button button false"
+        className="place-card__bookmark-button place-card__bookmark-button--active button"
         onClick={[Function]}
         type="button"
       >
@@ -65,7 +58,7 @@ exports[`correct renders card page 1`] = `
         <span
           className="visually-hidden"
         >
-          To bookmarks
+          In bookmarks
         </span>
       </button>
     </div>
@@ -78,7 +71,7 @@ exports[`correct renders card page 1`] = `
         <span
           style={
             Object {
-              "width": "1860%",
+              "width": "&{offer.rating}%",
             }
           }
         />
@@ -93,10 +86,10 @@ exports[`correct renders card page 1`] = `
       className="place-card__name"
     >
       <a
-        href="/offer/1"
+        href="/offer/999"
         onClick={[Function]}
       >
-        Beautiful &amp; luxurious apartment at great location
+        Test title 1
       </a>
     </h2>
     <p

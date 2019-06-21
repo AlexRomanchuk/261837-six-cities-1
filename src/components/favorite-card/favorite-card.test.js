@@ -1,7 +1,7 @@
 import React from "react";
-import {Main} from "../main/main.jsx";
+import renderer from "react-test-renderer";
+import {FavoriteCard} from "../favorite-card/favorite-card.jsx";
 import {StaticRouter} from "react-router-dom";
-import ShallowRenderer from "react-test-renderer/shallow";
 
 const mockPlaces = [
   {
@@ -77,36 +77,12 @@ const mockPlaces = [
   },
 ];
 
-const cities = [`Amsterdam`, `Dusseldorf`, `Moscow`];
-
-
-const currentCity = `Amsterdam`;
-
-const cityCoords = {
-  coordinates: {
-    coords: [52.3809553943508, 4.939309666406198],
-  }
-};
-
-const fakeCallback = () => {
-  return true;
-};
-
-it(`correct renders main page`, () => {
-  const renderer = new ShallowRenderer();
-  const tree = renderer
-    .render(<StaticRouter>
-      <Main
-        listOffers={mockPlaces}
-        cities={cities}
-        currentCity={currentCity}
-        onChange={fakeCallback}
-        cityCoords={cityCoords}
-        onSelect={fakeCallback}
-        onLogoutClick={fakeCallback}
-        isLoading={false}
-        isLoadingFailed={false}
-      />
-    </StaticRouter>);
+it(`FavoriteCard snapshot`, () => {
+  const tree = renderer.create(<StaticRouter>
+    <FavoriteCard
+      offer={mockPlaces[0]}
+      onRemoveBookmarkClick={jest.fn()}
+    /></StaticRouter>
+  ).toJSON();
   expect(tree).toMatchSnapshot();
 });

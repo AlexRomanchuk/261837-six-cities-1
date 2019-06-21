@@ -1,7 +1,6 @@
 import React from "react";
-import {Main} from "../main/main.jsx";
-import {StaticRouter} from "react-router-dom";
 import ShallowRenderer from "react-test-renderer/shallow";
+import {Property} from "../property/property.jsx";
 
 const mockPlaces = [
   {
@@ -77,36 +76,14 @@ const mockPlaces = [
   },
 ];
 
-const cities = [`Amsterdam`, `Dusseldorf`, `Moscow`];
-
-
-const currentCity = `Amsterdam`;
-
-const cityCoords = {
-  coordinates: {
-    coords: [52.3809553943508, 4.939309666406198],
-  }
-};
-
-const fakeCallback = () => {
-  return true;
-};
-
-it(`correct renders main page`, () => {
+it(`Property snapshot`, () => {
   const renderer = new ShallowRenderer();
-  const tree = renderer
-    .render(<StaticRouter>
-      <Main
-        listOffers={mockPlaces}
-        cities={cities}
-        currentCity={currentCity}
-        onChange={fakeCallback}
-        cityCoords={cityCoords}
-        onSelect={fakeCallback}
-        onLogoutClick={fakeCallback}
-        isLoading={false}
-        isLoadingFailed={false}
-      />
-    </StaticRouter>);
+  const tree = renderer.render(<Property
+    user={{name: `name`}}
+    isAuthorizeRequired={false}
+    onBookmarksClick={jest.fn}
+    nearOffers={[mockPlaces[1], mockPlaces[1], mockPlaces[1]]}
+    offer={mockPlaces[0]}
+  />);
   expect(tree).toMatchSnapshot();
 });

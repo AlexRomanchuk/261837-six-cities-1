@@ -1,19 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import {changeFavorites} from "../../reducers/reducer.js";
 
 const Card = (props) => {
   const {
     place,
-    onClick
+    onClick,
+    onBookmarkClick,
   } = props;
   return <article className="cities__place-card place-card">
-    {place[`is_premium`] && (<div className="place-card__mark">
+    {place.isPremium && (<div className="place-card__mark">
       <span>Premium</span>
     </div>)}
     <div className="cities__image-wrapper place-card__image-wrapper">
       <a href="#" onClick={onClick}>
-        <img className="place-card__image" src={place[`preview_image`]} width="260" height="200" alt="Place image" />
+        <img className="place-card__image" src={place.previewImage} width="260" height="200" alt="Place image" />
       </a>
     </div>
     <div className="place-card__info">
@@ -22,7 +25,9 @@ const Card = (props) => {
           <b className="place-card__price-value">&euro;{place.price}</b>
           <span className="place-card__price-text">&#47;&nbsp;night</span>
         </div>
-        <button className="place-card__bookmark-button button" type="button">
+        <button className={`place-card__bookmark-button button ${place.isFavorite && `place-card__bookmark-button--active`}`} type="button" onClick={() => {
+          onBookmarkClick(place);
+        }}>
           <svg className="place-card__bookmark-icon" width="18" height="19">
             <use xlinkHref="#icon-bookmark"></use>
           </svg>
@@ -46,12 +51,25 @@ const Card = (props) => {
 Card.propTypes = {
   place: PropTypes.shape({
     id: PropTypes.number.isRequired,
+    isPremium: PropTypes.bool.isRequired,
+    previewImage: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     rating: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
-    type: PropTypes.oneOf([`apartment`, `room`, `house`, `hotel`]).isRequired,
+    type: PropTypes.string.isRequired,
+    isFavorite: PropTypes.bool.isRequired,
   }).isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  onBookmarkClick: PropTypes.func.isRequired,
 };
 
-export default Card;
+const mapStateToProps = () => ({
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onBookmarkClick: (offer) => dispatch(changeFavorites(offer)),
+});
+
+export {Card};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

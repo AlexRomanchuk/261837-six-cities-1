@@ -11,7 +11,7 @@ const mockOffers = [
 ];
 
 const city = {
-  coordinates: {
+  location: {
     coords: [52.3809553943508, 4.939309666406198]
   }
 };

@@ -1,0 +1,80 @@
+[
+  {
+    "city": {
+      "name": "City 1",
+      "location": {
+        "latitude": 1,
+        "longitude": 2,
+        "zoom": 13
+      }
+    },
+    "preview_image": "https://test.com/1.jpg",
+    "images": [
+      "https://test.com/1.jpg"
+    ],
+    "title": "Text",
+    "is_favorite": false,
+    "is_premium": false,
+    "rating": 5,
+    "type": "house",
+    "bedrooms": 3,
+    "max_adults": 7,
+    "price": 100,
+    "goods": [
+      "Text",
+      "Text"
+    ],
+    "host": {
+      "id": 25,
+      "name": "Angelina",
+      "is_pro": true,
+      "avatar_url": "img/avatar.jpg"
+    },
+    "description": "Text",
+    "location": {
+      "latitude": 2,
+      "longitude": 3,
+      "zoom": 16
+    },
+    "id": 1
+  },
+  {
+    "city": {
+      "name": "City 2",
+      "location": {
+        "latitude": 1,
+        "longitude": 2,
+        "zoom": 13
+      }
+    },
+    "preview_image": "https://test.com/1.jpg",
+    "images": [
+      "https://test.com/1.jpg"
+    ],
+    "title": "Text",
+    "is_favorite": false,
+    "is_premium": false,
+    "rating": 5,
+    "type": "house",
+    "bedrooms": 3,
+    "max_adults": 7,
+    "price": 100,
+    "goods": [
+      "Text",
+      "Text"
+    ],
+    "host": {
+      "id": 25,
+      "name": "Angelina",
+      "is_pro": true,
+      "avatar_url": "img/avatar.jpg"
+    },
+    "description": "Text",
+    "location": {
+      "latitude": 2,
+      "longitude": 3,
+      "zoom": 16
+    },
+    "id": 2
+  }
+]

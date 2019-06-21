@@ -1,34 +1,37 @@
-import React from "react";
+import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import {Redirect} from "react-router-dom";
+import {connect} from "react-redux";
+import {compose} from "recompose";
+import withFormHandler from "../../hocs/with-form-handler.js";
+import {authorizeUser} from "../../reducers/reducer.js";
 
-const Login = (props) => {
-  const {onSubmitForm, autorizationError, onPasswordInput, onEmailInput, formData, user} = props;
-  if (user) {
-    return <Redirect to="/" />
+class Login extends PureComponent {
+  constructor(props) {
+    super(props);
+    this._handleSubmit = this._handleSubmit.bind(this);
   }
-  return <div>
-    <div style={{display: `none`}}>
-      <svg xmlns="http://www.w3.org/2000/svg"><symbol id="icon-arrow-select" viewBox="0 0 7 4"><path fillRule="evenodd" clipRule="evenodd" d="M0 0l3.5 2.813L7 0v1.084L3.5 4 0 1.084V0z"></path></symbol><symbol id="icon-bookmark" viewBox="0 0 17 18"><path d="M3.993 2.185l.017-.092V2c0-.554.449-1 .99-1h10c.522 0 .957.41.997.923l-2.736 14.59-4.814-2.407-.39-.195-.408.153L1.31 16.44 3.993 2.185z"></path></symbol><symbol id="icon-star" viewBox="0 0 13 12"><path fillRule="evenodd" clipRule="evenodd" d="M6.5 9.644L10.517 12 9.451 7.56 13 4.573l-4.674-.386L6.5 0 4.673 4.187 0 4.573 3.549 7.56 2.483 12 6.5 9.644z"></path></symbol></svg>
-    </div>
-
-    <main className="page__main page__main--login">
+  render() {
+    const {autorizationError, onFieldInput, formData = {}, user} = this.props;
+    const {email = ``, password = ``} = formData;
+    const BAD_DATA = 400;
+    if (user) {
+      return <Redirect to="/" />;
+    }
+    return <main className="page__main page__main--login">
       <div className="page__login-container container">
         <section className="login">
           <h1 className="login__title">Sign in</h1>
-          <form className="login__form form" onSubmit={(evt) => {
-            evt.preventDefault();
-            onSubmitForm(formData);
-          }}>
+          <form className="login__form form" onSubmit={this._handleSubmit}>
             <div className="login__input-wrapper form__input-wrapper">
               <label className="visually-hidden">E-mail</label>
-              <input className="login__input form__input" type="email" name="email" placeholder="Email" onChange={onEmailInput} required />
+              <input className="login__input form__input" type="email" name="email" value={email} placeholder="Email" onChange={onFieldInput} required />
             </div>
             <div className="login__input-wrapper form__input-wrapper">
               <label className="visually-hidden">Password</label>
-              <input className="login__input form__input" type="password" name="password" placeholder="Password" onChange={onPasswordInput} required />
+              <input className="login__input form__input" type="password" name="password" value={password} placeholder="Password" onChange={onFieldInput} required />
             </div>
-            {autorizationError ? <p>All fields are required.</p> : <></>}
+            {(autorizationError && autorizationError.status === BAD_DATA) && <p>All fields are required.</p>}
             <button className="login__submit form__submit button" type="submit">Sign in</button>
           </form>
         </section>
@@ -40,16 +43,37 @@ const Login = (props) => {
           </div>
         </section>
       </div>
-    </main>
-  </div>;
-};
+    </main>;
+  }
+  _handleSubmit(evt) {
+    evt.preventDefault();
+    const {formData = {}, onSubmitForm} = this.props;
+    const {email, password} = formData;
+    onSubmitForm(email, password);
+  }
+}
+
+const mapStateToProps = (state) => ({
+  user: state.user,
+  authorizationError: state.autorizationError,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onSubmitForm: (email, password) => dispatch(authorizeUser(email, password)),
+});
 
 Login.propTypes = {
+  onSubmitForm: PropTypes.func.isRequired,
+  onFieldInput: PropTypes.func.isRequired,
+  formData: PropTypes.object.isRequired,
   autorizationError: PropTypes.object,
-  formData: PropTypes.object,
-  onSubmitForm: PropTypes.func,
-  onPasswordInput: PropTypes.func,
-  onEmailInput: PropTypes.func,
+  user: PropTypes.object,
 };
 
-export default Login;
+export {Login};
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    withFormHandler()
+)(Login);
+

@@ -15,8 +15,7 @@ const Noteboard = (props) => {
     onClick,
     onSortClick,
     onOpenSortClick,
-    isLoadingFailed,
-    error,
+    isLoadingFailed
   } = props;
 
   let sortedPlaces = [...places];
@@ -30,8 +29,7 @@ const Noteboard = (props) => {
       <div className="cities__places-container cities__places-container--empty container">
         <section className="cities__no-places">
           <div className="cities__status-wrapper tabs__content">
-            <b className="cities__status">{error.response.data.error}</b>
-            <p className="cities__status-description">Error: {error.response.status}.</p>
+            <b className="cities__status">Server is not avaiable</b>
           </div>
         </section>
         <div className="cities__right-section">
@@ -111,8 +109,6 @@ const Noteboard = (props) => {
 Noteboard.propTypes = {
   places: PropTypes.array.isRequired,
   cityCoords: PropTypes.object.isRequired,
-  city: PropTypes.string,
-  activePlace: PropTypes.object,
   onClick: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   isSortOpen: PropTypes.bool.isRequired,
@@ -127,7 +123,8 @@ Noteboard.propTypes = {
   }).isRequired).isRequired,
   onSortClick: PropTypes.func.isRequired,
   isLoadingFailed: PropTypes.bool,
-  error: PropTypes.object,
+  city: PropTypes.string,
+  activePlace: PropTypes.object,
 };
 
 export default Noteboard;
