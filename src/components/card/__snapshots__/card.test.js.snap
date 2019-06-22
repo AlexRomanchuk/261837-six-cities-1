@@ -5,6 +5,13 @@ exports[`correct renders card page 1`] = `
   className="cities__place-card place-card"
 >
   <div
+    className="place-card__mark"
+  >
+    <span>
+      Premium
+    </span>
+  </div>
+  <div
     className="cities__image-wrapper place-card__image-wrapper"
   >
     <a
@@ -15,6 +22,7 @@ exports[`correct renders card page 1`] = `
         alt="Place image"
         className="place-card__image"
         height="200"
+        src="url"
         width="260"
       />
     </a>
@@ -41,7 +49,8 @@ exports[`correct renders card page 1`] = `
         </span>
       </div>
       <button
-        className="place-card__bookmark-button button"
+        className="place-card__bookmark-button button false"
+        onClick={[Function]}
         type="button"
       >
         <svg
@@ -84,7 +93,8 @@ exports[`correct renders card page 1`] = `
       className="place-card__name"
     >
       <a
-        href="#"
+        href="/offer/1"
+        onClick={[Function]}
       >
         Beautiful &amp; luxurious apartment at great location
       </a>

@@ -3,31 +3,31 @@ import leaflet from "leaflet";
 import PropTypes from "prop-types";
 
 const markerIcon = leaflet.icon({
-  iconUrl: `img/pin.svg`,
+  iconUrl: `/img/pin.svg`,
   iconSize: [27, 39]
 });
 
 const activeMarkerIcon = leaflet.icon({
-  iconUrl: `img/active-pin.svg`,
+  iconUrl: `/img/active-pin.svg`,
   iconSize: [27, 39]
 });
 
 class Map extends PureComponent {
   render() {
-    return <div id="map" style={{width: `100%`, height: `100%`}}>Не удалось показать карту</div>;
+    return <div id="map" className="full-height" style={{width: `100%`, height: `100%`}}>Не удалось показать карту</div>;
   }
 
   componentDidMount() {
     const {city, places} = this.props;
     setTimeout(() => {
-      const zoom = city.coordinates.zoom;
+      const zoom = city.location.zoom;
       this.map = leaflet.map(`map`, {
-        center: [city.coordinates.latitude, city.coordinates.longitude],
+        center: [city.location.latitude, city.location.longitude],
         [`zoom`]: zoom,
         zoomControl: false,
         marker: true
       });
-      this.map.setView([city.coordinates.latitude, city.coordinates.longitude], zoom);
+      this.map.setView([city.location.latitude, city.location.longitude], zoom);
 
       leaflet.tileLayer(
           `https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png`,
@@ -47,8 +47,8 @@ class Map extends PureComponent {
   componentDidUpdate() {
     if (this.map && this.markersLayer) {
       const {city, places, activePlace} = this.props;
-      const center = activePlace ? [activePlace.location.latitude, activePlace.location.longitude] : [city.coordinates.latitude, city.coordinates.longitude];
-      const zoom = activePlace ? activePlace.location.zoom : city.coordinates.zoom;
+      const center = activePlace ? [activePlace.location.latitude, activePlace.location.longitude] : [city.location.latitude, city.location.longitude];
+      const zoom = activePlace ? activePlace.location.zoom : city.location.zoom;
       this.map.panTo(center);
       this.map.setView(center, zoom);
       this.markersLayer.clearLayers();
@@ -73,7 +73,7 @@ Map.propTypes = {
       })
   ).isRequired,
   city: PropTypes.shape({
-    coordinates: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
   }),
   activePlace: PropTypes.object
 };

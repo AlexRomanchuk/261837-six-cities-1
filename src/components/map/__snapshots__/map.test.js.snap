@@ -2,6 +2,7 @@
 
 exports[`correct renders map page 1`] = `
 <div
+  className="full-height"
   id="map"
   style={
     Object {

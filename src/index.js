@@ -2,10 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom";
 import thunk from "redux-thunk";
 import Main from "./components/main/main.jsx";
+import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import {createStore, applyMiddleware} from "redux";
-import {reducer, loadData} from "./reducers/reducer.js";
-import configureAPI from "./api.js";
+import {reducer, loadData, loadAuthorizationData} from "./reducers/reducer.js";
+import {configureAPI, setupAPIinterceptors} from "./api.js";
+
 const api = configureAPI();
 
 /* eslint-disable no-underscore-dangle */
@@ -14,12 +16,16 @@ const store = createStore(
     applyMiddleware(thunk.withExtraArgument(api))
 );
 /* eslint-enable */
+store.dispatch(loadAuthorizationData());
 store.dispatch(loadData(`/hotels`));
+setupAPIinterceptors(api, store);
 
 const init = () => {
   ReactDOM.render(
       <Provider store={store}>
-        <Main />
+        <BrowserRouter>
+          <Main />
+        </BrowserRouter>
       </Provider>,
       document.querySelector(`#root`)
   );

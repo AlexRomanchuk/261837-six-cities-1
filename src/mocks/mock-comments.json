@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "user": {
+      "id": 14,
+      "is_pro": true,
+      "name": "Corey",
+      "avatar_url": "url"
+    },
+    "rating": 5,
+    "comment": "text",
+    "date": "2019-05-16T00:39:04.525Z"
+  },
+  {
+    "id": 2,
+    "user": {
+      "id": 19,
+      "is_pro": false,
+      "name": "Christina",
+      "avatar_url": "url"
+    },
+    "rating": 2,
+    "comment": "text",
+    "date": "2019-05-16T00:39:04.525Z"
+  }
+]

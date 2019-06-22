@@ -1,31 +1,33 @@
 import React, {PureComponent} from "react";
 
-const withFormHandler = (Component) => {
+const withFormHandler = (defaultFormData = {}) => (Component) => {
   class WithFormHandler extends PureComponent {
     constructor(props) {
       super(props);
       this.state = {
-        email: null,
-        password: null,
+        formData: defaultFormData
       };
-      this._handlerPasswordInput = this._handlerPasswordInput.bind(this);
-      this._handlerEmailInput = this._handlerEmailInput.bind(this);
+      this._handleInputChange = this._handleInputChange.bind(this);
     }
     render() {
       return <Component
         {...this.props}
-        formData={this.state}
-        onPasswordInput={this._handlerPasswordInput}
-        onEmailInput={this._handlerEmailInput}
+        formData={this.state.formData}
+        onFieldInput={this._handleInputChange}
       />;
     }
-    _handlerPasswordInput(evt) {
-      this.setState({password: evt.target.value});
-    }
-    _handlerEmailInput(evt) {
-      this.setState({email: evt.target.value});
+    _handleInputChange(evt) {
+      const target = evt.target;
+      const value = target.type === `checkbox` ?
+        target.checked : target.value;
+      const name = target.name;
+
+      this.setState({
+        formData: Object.assign({}, this.state.formData, {[name]: value}),
+      });
     }
   }
+
   return WithFormHandler;
 };
 

@@ -6,3 +6,8 @@
   flex-grow: 1;
   flex-direction: column;
 }
+
+.property__bookmark-button--active .property__bookmark-icon {
+  stroke: #4481c3;
+  fill: #4481c3
+}

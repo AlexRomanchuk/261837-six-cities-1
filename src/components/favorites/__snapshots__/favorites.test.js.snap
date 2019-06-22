@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Favorites snapshot 1`] = `
+<main
+  className="page__main page__main--favorites"
+>
+  <div
+    className="page__favorites-container container"
+  >
+    <section
+      className="favorites"
+    >
+      <h1
+        className="favorites__title"
+      >
+        Saved listing
+      </h1>
+      <ul
+        className="favorites__list"
+      >
+        <li
+          className="favorites__locations-items"
+        >
+          <div
+            className="favorites__locations locations locations--current"
+          >
+            <div
+              className="locations__item"
+            >
+              <a
+                className="locations__item-link"
+                href="#"
+              >
+                <span>
+                  city
+                </span>
+              </a>
+            </div>
+          </div>
+          <div
+            className="favorites__places"
+          >
+            <Memo(ConnectFunction)
+              offer={
+                Object {
+                  "bedrooms": 2,
+                  "city": Object {
+                    "location": Object {
+                      "latitude": 1,
+                      "longitude": 2,
+                      "zoom": 13,
+                    },
+                    "name": "City name 1",
+                  },
+                  "description": "text",
+                  "goods": Array [
+                    "one",
+                    "two",
+                    "tree",
+                  ],
+                  "host": Object {
+                    "avatarUrl": "url",
+                    "id": 1,
+                    "isPro": true,
+                    "name": "name",
+                  },
+                  "id": 999,
+                  "images": Array [
+                    "url1",
+                    "url2",
+                    "url3",
+                  ],
+                  "isFavorite": true,
+                  "isPremium": true,
+                  "location": Object {
+                    "latitude": 1,
+                    "longitude": 2,
+                    "zoom": 13,
+                  },
+                  "maxAdults": 2,
+                  "picture": "test-image1.jpg",
+                  "previewImage": "",
+                  "price": 111,
+                  "rating": 22,
+                  "title": "Test title 1",
+                  "type": "apartment",
+                }
+              }
+            />
+            <Memo(ConnectFunction)
+              offer={
+                Object {
+                  "bedrooms": 3,
+                  "city": Object {
+                    "location": Object {
+                      "latitude": 1,
+                      "longitude": 2,
+                      "zoom": 13,
+                    },
+                    "name": "City name 2",
+                  },
+                  "coordinates": Array [
+                    52.3909553943508,
+                    4.85309666406198,
+                  ],
+                  "description": "text",
+                  "goods": Array [
+                    "one",
+                    "two",
+                    "tree",
+                  ],
+                  "host": Object {
+                    "avatarUrl": "url",
+                    "id": 1,
+                    "isPro": true,
+                    "name": "name",
+                  },
+                  "id": 222,
+                  "images": Array [
+                    "url1",
+                    "url2",
+                    "url3",
+                  ],
+                  "isFavorite": true,
+                  "isPremium": false,
+                  "location": Object {
+                    "latitude": 1,
+                    "longitude": 2,
+                    "zoom": 13,
+                  },
+                  "maxAdults": 1,
+                  "picture": "test-image2.jpg",
+                  "previewImage": "",
+                  "price": 222,
+                  "rating": 100,
+                  "title": "Test title 2",
+                  "type": "house",
+                }
+              }
+            />
+          </div>
+        </li>
+      </ul>
+    </section>
+  </div>
+</main>
+`;

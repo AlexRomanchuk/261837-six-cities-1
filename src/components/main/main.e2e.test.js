@@ -5,63 +5,78 @@ import {Main} from "../main/main.jsx";
 
 Enzyme.configure({adapter: new Adapter()});
 
-const mockOffers = [
+const mockPlaces = [
   {
-    id: 1,
+    id: 999,
     isPremium: true,
-    src: `img/apartment-01.jpg`,
-    price: 120,
+    picture: `test-image1.jpg`,
+    price: 111,
+    rating: 22,
+    title: `Test title 1`,
+    description: `text`,
+    bedrooms: 2,
     type: `apartment`,
-    title: `Beautiful &amp; luxurious apartment at great location`,
-    rating: 93,
+    goods: [`one`, `two`, `tree`],
+    images: [`url1`, `url2`, `url3`],
+    previewImage: ``,
+    maxAdults: 2,
+    isFavorite: true,
+    city: {
+      name: `City name 1`,
+      location: {
+        latitude: 1,
+        longitude: 2,
+        zoom: 13
+      }
+    },
+    location: {
+      latitude: 1,
+      longitude: 2,
+      zoom: 13
+    },
+    host: {
+      id: 1,
+      name: `name`,
+      isPro: true,
+      avatarUrl: `url`
+    }
+  },
+  {
+    id: 222,
+    isPremium: false,
+    picture: `test-image2.jpg`,
+    price: 222,
+    rating: 100,
+    title: `Test title 2`,
+    description: `text`,
+    goods: [`one`, `two`, `tree`],
+    images: [`url1`, `url2`, `url3`],
+    bedrooms: 3,
+    maxAdults: 1,
+    type: `house`,
+    previewImage: ``,
+    isFavorite: true,
     coordinates: [52.3909553943508, 4.85309666406198],
     city: {
-      name: `Amsterdam`,
-      coords: [52.38333, 4.9]
+      name: `City name 2`,
+      location: {
+        latitude: 1,
+        longitude: 2,
+        zoom: 13
+      }
+    },
+    location: {
+      latitude: 1,
+      longitude: 2,
+      zoom: 13
+    },
+    host: {
+      id: 1,
+      name: `name`,
+      isPro: true,
+      avatarUrl: `url`
     }
   },
-  {
-    id: 2,
-    isPremium: true,
-    src: `img/room.jpg`,
-    price: 80,
-    type: `room`,
-    title: `Wood and stone place`,
-    rating: 80,
-    coordinates: [52.369553943508, 4.85309666406198],
-    city: {
-      name: `Amsterdam`,
-      coords: [52.38333, 4.9]
-    }
-  },
-  {
-    id: 3,
-    isPremium: false,
-    src: `img/apartment-02.jpg`,
-    price: 132,
-    type: `apartment`,
-    title: `Canal View Prinsengracht`,
-    rating: 80,
-    coordinates: [52.3909553943508, 4.929309666406198],
-    city: {
-      name: `Amsterdam`,
-      coords: [52.38333, 4.9]
-    }
-  },
-  {
-    id: 4,
-    isPremium: false,
-    src: `img/apartment-03.jpg`,
-    price: 180,
-    type: `hotel`,
-    title: `Nice, cozy, warm big bed apartment`,
-    rating: 100,
-    coordinates: [52.3809553943508, 4.939309666406198],
-    city: {
-      name: `Amsterdam`,
-      coords: [52.38333, 4.9]
-    }
-  }
 ];
 
 const cities = [`Amsterdam`, `Dusseldorf`, `Moscow`];
@@ -80,14 +95,16 @@ const fakeCallback = () => {
 it(`correct click handler on card title`, () => {
   const clickHandler = jest.fn();
   const main = shallow(<Main
-    listOffers={mockOffers}
+    listOffers={mockPlaces}
     cities={cities}
     currentCity={currentCity}
-    cityCoords={cityCoords}
     onChange={fakeCallback}
+    cityCoords={cityCoords}
     onSelect={fakeCallback}
     onSubmitForm={fakeCallback}
-    onProfileClick={fakeCallback}
+    onLogoutClick={fakeCallback}
+    isLoading={false}
+    isLoadingFailed={false}
   />);
 
   const headerLink = main.find(`.place-card__name a`);
