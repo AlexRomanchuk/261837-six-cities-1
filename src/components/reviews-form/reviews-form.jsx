@@ -98,11 +98,16 @@ ReviewsForm.propTypes = {
   formData: PropTypes.object,
 };
 
+const Lenght = {
+  MIN: 50,
+  MAX: 300,
+};
+
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
   sending: state.isCommentSending,
   sended: state.isCommentSended,
   sendingError: state.commentError,
-  invalid: (!state.rating || state.rating === 0 || state.comment.length < 50 || state.comment.length > 300) ? true : false,
+  invalid: (!state.rating || state.rating === 0 || state.comment.length < Lenght.MIN || state.comment.length > Lenght.MAX) ? true : false,
   formData: {
     rating: Number(state.rating),
     comment: state.comment,

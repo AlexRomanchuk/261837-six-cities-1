@@ -7,6 +7,7 @@ import {connect} from "react-redux";
 import {changeFavorites} from "../../reducers/reducer.js";
 import {getTreeNearPlaces, getOfferById} from "../../util/util.js";
 import Map from "../map/map.jsx";
+import {Link} from "react-router-dom";
 
 const PlaceTypes = {
   apartment: `Apartment`,
@@ -119,9 +120,9 @@ const Property = (props) => {
         <div className="near-places__list places__list">
           {nearOffers.map((nearOffer, i) => <article className="near-places__card place-card" key={i}>
             <div className="near-places__image-wrapper place-card__image-wrapper">
-              <a href="#">
+              <Link to={`/offer/${nearOffer.id}`}>
                 <img className="place-card__image" src={nearOffer.previewImage} width="260" height="200" alt="Place image" />
-              </a>
+              </Link>
             </div>
             <div className="place-card__info">
               <div className="place-card__price-wrapper">
@@ -129,7 +130,9 @@ const Property = (props) => {
                   <b className="place-card__price-value">&euro;{nearOffer.price}</b>
                   <span className="place-card__price-text">&#47;&nbsp;night</span>
                 </div>
-                <button className={`place-card__bookmark-button button ${nearOffer.isFavorite && `place-card__bookmark-button--active`}`} type="button">
+                <button className={`place-card__bookmark-button button ${nearOffer.isFavorite && `place-card__bookmark-button--active`}`} type="button" onClick={() => {
+                  onBookmarksClick(nearOffer);
+                }}>
                   <svg className="place-card__bookmark-icon" width="18" height="19">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -143,7 +146,7 @@ const Property = (props) => {
                 </div>
               </div>
               <h2 className="place-card__name">
-                <a href="#">{nearOffer.title}</a>
+                <Link to={`/offer/${nearOffer.id}`}>{nearOffer.title}</Link>
               </h2>
               <p className="place-card__type">{nearOffer.type}</p>
             </div>

@@ -34,7 +34,7 @@ it(`Reviews snapshot`, () => {
     load={jest.fn}
     offerId={1}
     reviews={loadedComments}
-    isLoaded={false}
+    isLoaded={true}
     isLoading={false}
   />).toJSON();
   expect(tree).toMatchSnapshot();

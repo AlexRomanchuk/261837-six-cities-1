@@ -85,7 +85,7 @@ Reviews.propTypes = {
 const mapStateToProps = (state) => ({
   reviews: state.comments,
   isLoaded: state.isCommentsLoaded,
-  isLoading: state.isLoading,
+  isLoading: state.isCommentsLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

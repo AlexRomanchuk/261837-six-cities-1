@@ -81,6 +81,7 @@ it(`Favorites snapshot`, () => {
   const result = renderer.render(<Favorites
     loadData={jest.fn}
     isLoaded={true}
+    isLoading={false}
     isAuthorizationRequired={false}
     favorites={[{
       city: {name: `city`},

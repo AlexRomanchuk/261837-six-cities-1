@@ -59,11 +59,11 @@ export const parseOffer = (offer) => ({
   id: offer.id,
 });
 
-export const calcDistance = (lat1, lon1, lat2, lon2) => {
-  let radlat1 = Math.PI * lat1 / 180;
-  let radlat2 = Math.PI * lat2 / 180;
-  let theta = lon1 - lon2;
-  let radtheta = Math.PI * theta / 180;
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+  const radlat1 = Math.PI * lat1 / 180;
+  const radlat2 = Math.PI * lat2 / 180;
+  const theta = lon1 - lon2;
+  const radtheta = Math.PI * theta / 180;
   let dist = Math.sin(radlat1) * Math.sin(radlat2) +
     Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
   if (dist > 1) {
@@ -78,7 +78,7 @@ export const calcDistance = (lat1, lon1, lat2, lon2) => {
 
 export const getTreeNearPlaces = (state, place, count) => {
   return state.listOffers.map((it) => {
-    it.distance = calcDistance(place.location.latitude, place.location.longitude, it.location.latitude, it.location.longitude);
+    it.distance = calculateDistance(place.location.latitude, place.location.longitude, it.location.latitude, it.location.longitude);
     return it;
   }).sort((place1, place2) => place1.distance - place2.distance).slice(1, count + 1);
 };

@@ -14,9 +14,11 @@ export const initialState = {
   comments: [],
   city: null,
   activeCard: null,
-  isLoadingFailed: false,
   isLoading: true,
+  isLoadingFailed: false,
+  isFavoritesLoading: true,
   isFavoritesLoaded: false,
+  isCommentsLoading: true,
   isCommentsLoaded: false,
   isCommentSending: false,
   isCommentSended: false,
@@ -29,7 +31,6 @@ export const initialState = {
 // блок действий
 
 export const ActionsCreator = {
-  // tested
   "CHANGE_CITY": (city) => {
     let currentCity = city;
     return {
@@ -39,7 +40,6 @@ export const ActionsCreator = {
       },
     };
   },
-  // tested
   "LOAD_DATA_SUCCESSFUL": (data) => {
     return {
       type: `LOAD_DATA_SUCCESSFUL`,
@@ -48,7 +48,6 @@ export const ActionsCreator = {
       },
     };
   },
-  // tested
   "LOAD_DATA_FAILURE": (err) => {
     return {
       type: `LOAD_DATA_FAILURE`,
@@ -89,7 +88,6 @@ export const ActionsCreator = {
       payload: data,
     };
   },
-  // tested
   "REGISTER": (data) => {
     return {
       type: `REGISTER`,
@@ -169,8 +167,6 @@ export const sendReview = (placeId, comment) => (dispatch, _getState, api) => {
       if (error.response && error.response.data && error.response.data.error) {
         if (error.response.status === Status.BAD_DATA) {
           errorString = `All fields are required.`;
-        } else {
-          errorString = error.response.data.error;
         }
       }
       dispatch(ActionsCreator[`COMMENT_ERROR`](errorString));
@@ -276,32 +272,32 @@ export const reducer = (state = initialState, action) => {
       activeCard: null,
     });
     case `LOAD_DATA_SUCCESSFUL`: return Object.assign({}, state, {
-      listOffers: action.payload.offers,
       isLoading: false,
+      listOffers: action.payload.offers,
     });
     case `LOAD_DATA_FAILURE`: return Object.assign({}, state, {
-      isLoadingFailed: true,
       isLoading: false,
+      isLoadingFailed: true,
       error: action.payload,
     });
     case `LOAD_FAVORITES_SUCCESSFUL`: return Object.assign({}, state, {
+      isFavoritesLoading: false,
       favoritePlaces: action.payload.offers,
-      isLoading: false,
       isFavoritesLoaded: true,
     });
     case `LOAD_COMMENTS_SUCCESSFUL`: return Object.assign({}, state, {
       comments: action.payload.comments,
-      isLoading: false,
+      isCommentsLoading: false,
       isCommentsLoaded: true,
     });
     case `LOAD_FAVORITES_FAILURE`: return Object.assign({}, state, {
-      isLoadingFailed: true,
-      isLoading: false,
+      isFavoritesLoading: false,
+      isFavoritesLoaded: false,
       error: action.payload,
     });
     case `LOAD_COMMENTS_FAILURE`: return Object.assign({}, state, {
-      isLoadingFailed: true,
-      isLoading: false,
+      isCommentsLoading: false,
+      isCommentsLoaded: false,
       error: action.payload,
     });
     case `SELECT_CARD`: return Object.assign({}, state, {

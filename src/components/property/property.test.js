@@ -1,6 +1,7 @@
 import React from "react";
 import ShallowRenderer from "react-test-renderer/shallow";
 import {Property} from "../property/property.jsx";
+import {StaticRouter} from "react-router-dom";
 
 const mockPlaces = [
   {
@@ -78,12 +79,12 @@ const mockPlaces = [
 
 it(`Property snapshot`, () => {
   const renderer = new ShallowRenderer();
-  const tree = renderer.render(<Property
+  const tree = renderer.render(<StaticRouter><Property
     user={{name: `name`}}
     isAuthorizeRequired={false}
     onBookmarksClick={jest.fn}
     nearOffers={[mockPlaces[1], mockPlaces[1], mockPlaces[1]]}
     offer={mockPlaces[0]}
-  />);
+  /></StaticRouter>);
   expect(tree).toMatchSnapshot();
 });

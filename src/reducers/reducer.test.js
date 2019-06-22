@@ -17,33 +17,6 @@ const api = configureAPI();
 const offers = mockOffers.map(parseOffer);
 const comments = mockComments.map(parseComment);
 
-const initOffers = [
-  {
-    src: `img/apartment-01.jpg`,
-    price: 120,
-    type: `Apartment`,
-    title: `Beautiful &amp; luxurious apartment at great location`,
-    rating: 93,
-    coords: [52.3909553943508, 4.85309666406198],
-    city: {
-      name: `Amsterdam`,
-      coords: [52.38333, 4.9]
-    }
-  },
-  {
-    src: `img/apartment-03.jpg`,
-    price: 180,
-    type: `Hotel`,
-    title: `Nice, cozy, warm big bed apartment`,
-    rating: 100,
-    coords: [57.3809766943508, 4.93930776406198],
-    city: {
-      name: `Moscow`,
-      coords: [59.37633, 0.9]
-    }
-  }
-];
-
 const initialState = {
   rating: 0,
   comment: ``,
@@ -53,9 +26,11 @@ const initialState = {
   comments: [],
   city: null,
   activeCard: null,
-  isLoadingFailed: false,
   isLoading: true,
+  isLoadingFailed: false,
+  isFavoritesLoading: true,
   isFavoritesLoaded: false,
+  isCommentsLoading: true,
   isCommentsLoaded: false,
   isCommentSending: false,
   isCommentSended: false,
@@ -65,235 +40,157 @@ const initialState = {
   commentError: null,
 };
 
-export const ActionsCreator = {
-  // tested
-  "CHANGE_CITY": (city) => {
-    let currentCity = city;
-    return {
-      type: `CHANGE_CITY`,
-      payload: {
-        city: currentCity,
-      },
-    };
-  },
-  // tested
-  "LOAD_DATA_SUCCESSFUL": (data) => {
-    return {
-      type: `LOAD_DATA_SUCCESSFUL`,
-      payload: {
-        offers: data,
-      },
-    };
-  },
-  // tested
-  "LOAD_DATA_FAILURE": (err) => {
-    return {
-      type: `LOAD_DATA_FAILURE`,
-      payload: err,
-    };
-  },
-  "LOAD_FAVORITES_SUCCESSFUL": (data) => {
-    return {
-      type: `LOAD_FAVORITES_SUCCESSFUL`,
-      payload: {
-        offers: data,
-      }
-    };
-  },
-  "LOAD_COMMENTS_SUCCESSFUL": (data) => {
-    return {
+describe(`Reducer end point api works correctly`, () => {
+  it(`Reducer without additional parameters should return initial state`, () => {
+    expect(reducer(undefined, {})).toEqual(initialState);
+  });
+
+  it(`Reducer save loaded comments to store`, () => {
+    expect(reducer(undefined, {
       type: `LOAD_COMMENTS_SUCCESSFUL`,
-      payload: {
-        comments: data,
-      }
-    };
-  },
-  "LOAD_FAVORITES_FAILURE": (err) => {
-    return {
-      type: `LOAD_FAVORITES_FAILURE`,
-      payload: err,
-    };
-  },
-  "LOAD_COMMENTS_FAILURE": (err) => {
-    return {
-      type: `LOAD_COMMENTS_FAILURE`,
-      payload: err,
-    };
-  },
-  "SELECT_CARD": (data) => {
-    return {
+      payload: {"comments": comments},
+    }).comments).toEqual(comments);
+  });
+
+  it(`Reducer correctly change city`, () => {
+    const currentCity = `Amsterdam`;
+    expect(reducer(undefined, {
+      type: `CHANGE_CITY`,
+      payload: {city: currentCity},
+    }).city).toEqual(currentCity);
+  });
+
+  it(`Reducer correctly change city`, () => {
+    const mockData = offers[0];
+    expect(reducer(undefined, {
       type: `SELECT_CARD`,
-      payload: data,
-    };
-  },
-  // tested
-  "REGISTER": (data) => {
-    return {
-      type: `REGISTER`,
-      payload: data,
-    };
-  },
-  "HANDLE_ERROR_AUTORIZE": (err) => {
-    return {
-      type: `HANDLE_ERROR_AUTORIZE`,
-      payload: err,
-    };
-  },
-  "UPDATE_OFFER": (offer) => {
-    return {
-      type: `UPDATE_OFFER`,
-      payload: offer,
-    };
-  },
-  "REMOVE_FAVORITE": (place) => {
-    return {
-      type: `REMOVE_FAVORITE`,
-      payload: place,
-    };
-  },
-  "COMMENT_SENDING": (isSending) => {
-    return {
+      payload: mockData,
+    }).activeCard).toEqual(mockData);
+  });
+
+  it(`Reducer save loading error to store`, () => {
+    const errorText = `some error`;
+    expect(reducer(undefined, {
+      type: `LOAD_COMMENTS_FAILURE`,
+      payload: errorText,
+    }).error).toEqual(errorText);
+  });
+
+  it(`Reducer set sending state`, () => {
+    expect(reducer(undefined, {
       type: `COMMENT_SENDING`,
-      payload: isSending,
-    };
-  },
-  "COMMENT_ERROR": (error) => {
-    return {
+      payload: true,
+    }).isCommentSending).toEqual(true);
+  });
+
+  it(`Reducer set sended state`, () => {
+    expect(reducer(undefined, {
+      type: `COMMENT_SENDED`,
+    })).toEqual(expect.objectContaining({
+      isCommentSending: false,
+      error: null,
+      isCommentSended: true,
+    }));
+  });
+
+  it(`Reducer save sending error to store`, () => {
+    const error = `some error`;
+    expect(reducer(undefined, {
       type: `COMMENT_ERROR`,
       payload: error,
-    };
-  },
-  "COMMENT_SENDED": () => {
-    return {
-      type: `COMMENT_SENDED`,
-    };
-  },
-  "RATING_INPUT": (rating) => {
-    return {
+    })).toEqual(expect.objectContaining({
+      isCommentSending: false,
+      commentError: error,
+      isCommentSended: false,
+    }));
+  });
+
+  it(`Reducer should save authorazation state to store`, () => {
+    expect(reducer(undefined, {
+      type: `REGISTER`,
+      payload: {name: `user`},
+    }).user).toEqual({name: `user`});
+  });
+
+  it(`Reducer should save authorazation error to store`, () => {
+    const authorizationError = {error: `error text`};
+    expect(reducer(undefined, {
+      type: `HANDLE_ERROR_AUTORIZE`,
+      payload: authorizationError,
+    }).autorizationError).toEqual(authorizationError);
+  });
+
+  it(`Reducer should set offers loading state`, () => {
+    expect(reducer(undefined, {
+      type: `LOAD_DATA_SUCCESSFUL`,
+      payload: offers,
+    })).toEqual(expect.objectContaining({
+      isLoadingFailed: false,
+      isLoading: false,
+    }));
+  });
+
+  it(`Reducer should save loading data error to store`, () => {
+    const mockError = `some error text`;
+    expect(reducer(undefined, {
+      type: `LOAD_DATA_FAILURE`,
+      payload: mockError,
+    }).error).toEqual(mockError);
+  });
+
+  it(`Reducer should update offer in store`, () => {
+    const newOffer = Object.assign({}, offers[0], {title: `Edited title`});
+    expect(reducer({listOffers: [...offers]}, {
+      type: `UPDATE_OFFER`,
+      payload: newOffer,
+    }).listOffers[0]).toEqual(newOffer);
+  });
+
+  it(`Reducer save favorites to store`, () => {
+    expect(reducer(undefined, {
+      type: `LOAD_FAVORITES_SUCCESSFUL`,
+      payload: {"offers": offers},
+    }).favoritePlaces).toEqual(offers);
+  });
+
+  it(`Reducer save loading error favorites to store`, () => {
+    const errorText = `some error`;
+    expect(reducer(undefined, {
+      type: `LOAD_FAVORITES_FAILURE`,
+      payload: errorText,
+    }).error).toEqual(errorText);
+  });
+
+  it(`Reducer remove offer from favorites`, () => {
+    expect(reducer({favoritePlaces: [...offers]}, {
+      type: `REMOVE_FAVORITE`,
+      payload: offers[0],
+    }).favoritePlaces).toEqual(offers.filter((it) => it.id !== offers[0].id));
+  });
+
+  it(`Correct handle input rating`, () => {
+    const rating = 4;
+    expect(reducer(undefined, {
       type: `RATING_INPUT`,
       payload: rating,
-    };
-  },
-  "COMMENT_INPUT": (comment) => {
-    return {
+    }).rating).toEqual(rating);
+  });
+
+  it(`Correct handle input comment`, () => {
+    const comment = `some text`;
+    expect(reducer(undefined, {
       type: `COMMENT_INPUT`,
       payload: comment,
-    };
-  },
-  "FORM_RESET": () => {
-    return {
+    }).comment).toEqual(comment);
+  });
+
+  it(`Correct reset comment form`, () => {
+    expect(reducer(undefined, {
       type: `FORM_RESET`,
-    };
-  },
-};
-
-describe(`Reducer end point api works correctly`, () => {
-  it(`correct change city`, () => {
-    expect(reducer(initialState, {
-      type: `CHANGE_CITY`,
-      payload: initialState
-    }).city).toEqual(`Amsterdam`);
-  });
-
-  it(`correct register`, () => {
-    expect(reducer(initialState, {
-      type: `REGISTER`,
-      payload: `New User`
-    }).user).toEqual(`New User`);
-  });
-
-  it(`correct select offer`, () => {
-    expect(reducer(initialState, {
-      type: `SELECT_CARD`,
-      payload: {
-        city: `Amsterdam`
-      }
-    }).currentCity).toEqual(null);
-  });
-  it(`correct change city`, () => {
-    expect(reducer(initialState, {
-      type: `LOAD_DATA_SUCCESSFUL`,
-      payload: initialState
-    }).city).toEqual(`Amsterdam`);
-  });
-
-  it(`correct register`, () => {
-    expect(reducer(initialState, {
-      type: `LOAD_DATA_FAILURE`,
-      payload: `New User`
-    }).user).toEqual(`New User`);
-  });
-
-  it(`correct select offer`, () => {
-    expect(reducer(initialState, {
-      type: `HANDLE_ERROR_AUTORIZE`,
-      payload: {
-        city: `Amsterdam`
-      }
-    }).currentCity).toEqual(null);
-  });
-  it(`correct change city`, () => {
-    expect(reducer(initialState, {
-      type: `LOAD_FAVORITES_SUCCESSFUL`,
-      payload: initialState
-    }).city).toEqual(`Amsterdam`);
-  });
-
-  it(`correct register`, () => {
-    expect(reducer(initialState, {
-      type: `LOAD_FAVORITES_FAILURE`,
-      payload: `New User`
-    }).user).toEqual(`New User`);
-  });
-
-  it(`correct select offer`, () => {
-    expect(reducer(initialState, {
-      type: `UPDATE_OFFER`,
-      payload: {
-        city: `Amsterdam`
-      }
-    }).currentCity).toEqual(null);
-  });
-  it(`correct change city`, () => {
-    expect(reducer(initialState, {
-      type: `REMOVE_FAVORITE`,
-      payload: initialState
-    }).city).toEqual(`Amsterdam`);
-  });
-
-  it(`correct register`, () => {
-    expect(reducer(initialState, {
-      type: `COMMENT_SENDING`,
-      payload: `New User`
-    }).user).toEqual(`New User`);
-  });
-
-  it(`correct select offer`, () => {
-    expect(reducer(initialState, {
-      type: `COMMENT_SENDED`,
-      payload: {
-        city: `Amsterdam`
-      }
-    }).currentCity).toEqual(null);
-  });
-  it(`correct change city`, () => {
-    expect(reducer(initialState, {
-      type: `RATING_INPUT`,
-      payload: initialState
-    }).city).toEqual(`Amsterdam`);
-  });
-
-  it(`correct register`, () => {
-    expect(reducer(initialState, {
-      type: `COMMENT_INPUT`,
-      payload: `New User`
-    }).user).toEqual(`New User`);
-  });
-
-  it(`correct select offer`, () => {
-    expect(reducer(initialState, {
-      type: `FORM_RESET`,
-    }).currentCity).toEqual(null);
+    })).toEqual(expect.objectContaining({
+      rating: 0,
+      comment: ``
+    }));
   });
 });
 

@@ -13,8 +13,8 @@ class Favorites extends PureComponent {
     this.props.loadData();
   }
   render() {
-    const {favorites, isLoaded} = this.props;
-    if (!isLoaded) {
+    const {favorites, isLoading, isLoaded} = this.props;
+    if (isLoading) {
       return <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">
@@ -26,6 +26,18 @@ class Favorites extends PureComponent {
                 </div>
               </li>
             </ul>
+          </section>
+        </div>
+      </main>;
+    }
+    if (!isLoaded) {
+      return <main className="page__main page__main--favorites page__main--favorites-empty">
+        <div className="page__favorites-container container">
+          <section className="favorites favorites--empty">
+            <h1 className="visually-hidden">Favorites (empty)</h1>
+            <div className="favorites__status-wrapper">
+              <b className="favorites__status">Error on loading favorites.</b>
+            </div>
           </section>
         </div>
       </main>;
@@ -73,6 +85,7 @@ class Favorites extends PureComponent {
 
 Favorites.propTypes = {
   loadData: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
   isLoaded: PropTypes.bool.isRequired,
   favorites: PropTypes.arrayOf(PropTypes.shape({
     city: PropTypes.shape({
@@ -85,8 +98,9 @@ Favorites.propTypes = {
 const mapStateToProps = (state) => {
   const sortedFavorites = getOrderedFavorites(state.favoritePlaces);
   return {
-    favorites: sortedFavorites,
+    isLoading: state.isFavoritesLoading,
     isLoaded: state.isFavoritesLoaded,
+    favorites: sortedFavorites,
     isAuthorizationRequired: state.isAuthorizationRequired,
   };
 };
