@@ -16,7 +16,7 @@ const withAuthorizeReqired = (Component) => {
   };
 
   const mapStateToProps = (state) => ({
-    user: state.user,
+    user: state[`USER`].user,
   });
 
   return connect(mapStateToProps)(WithAuthorizeReqired);

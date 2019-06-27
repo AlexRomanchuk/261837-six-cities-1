@@ -1,7 +1,7 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {loadComments} from "../../reducers/reducer.js";
+import {loadComments} from "../../reducers/comments/comments.js";
 import {format} from "date-fns";
 
 class Reviews extends PureComponent {
@@ -83,9 +83,9 @@ Reviews.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  reviews: state.comments,
-  isLoaded: state.isCommentsLoaded,
-  isLoading: state.isCommentsLoading,
+  reviews: state[`COMMENTS`].comments,
+  isLoaded: state[`COMMENTS`].isCommentsLoaded,
+  isLoading: state[`COMMENTS`].isCommentsLoading,
 });
 
 const mapDispatchToProps = (dispatch) => ({

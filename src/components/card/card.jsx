@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {changeFavorites} from "../../reducers/reducer.js";
+import {changeFavorites} from "../../reducers/favorites/favorites.js";
 
 const Card = (props) => {
   const {

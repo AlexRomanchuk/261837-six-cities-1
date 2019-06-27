@@ -1,38 +1,24 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Noteboard from "../noteboard/noteboard.jsx";
 import Loading from "../loading/loading.jsx";
 import Property from "../property/property.jsx";
 import Login from "../login/login.jsx";
-import Cities from "../cities/cities.jsx";
+import MainPage from "../main-page/main-page.jsx";
 import Favorites from "../favorites/favorites.jsx";
 import ScrollToTop from "../scroll-to-top/scroll-to-top.jsx";
-import {ActionsCreator, unauthorizeUser} from "../../reducers/reducer.js";
-import {selectCities} from "../../util/util.js";
+import Redirector from "../redirector/redirector.jsx";
+import {unauthorizeUser} from "../../reducers/user/user.js";
 import history from "../../util/util.js";
 import {Router, Switch, Route, Link} from "react-router-dom";
 import {connect} from "react-redux";
-import withActiveItem from "../../hocs/with-active-item.js";
-import withSortOpen from "../../hocs/with-sort-open.js";
-import withPlacesSort from "../../hocs/with-places-sort.js";
 import withAuthorizeRequired from "../../hocs/with-authorize-required.js";
 
 const PrivateFavoritesPage = withAuthorizeRequired(Favorites);
-const WrappedNoteboard = withPlacesSort(withSortOpen(withActiveItem(Noteboard)));
 
 const Main = (props) => {
   const {
-    listOffers,
-    cities,
-    currentCity,
-    cityCoords,
-    onChange,
-    isLoadingFailed,
     isLoading,
-    onSelect,
-    activePlace,
     user,
-    error,
     onLogoutClick,
   } = props;
 
@@ -80,29 +66,12 @@ const Main = (props) => {
           </div>
         </header>
         <Switch>
-          <Route path="/" exact render={() => isLoading ? <Loading /> :
-            <main className="page__main page__main--index">
-              <h1 className="visually-hidden">Cities</h1>
-              <div className="cities tabs">
-                <Cities data={cities} currentCity={currentCity} onChange={onChange} />
-              </div>
-              <WrappedNoteboard
-                activePlace={activePlace}
-                places={listOffers}
-                city={currentCity}
-                cityCoords={cityCoords}
-                isLoadingFailed={isLoadingFailed}
-                error={error}
-                isLoading={isLoading}
-                onSelect={onSelect}
-              />
-            </main>
-          }/>
+          <Route path="/" exact render={() => isLoading ? <Loading /> : <MainPage />} />
           <Route path="/login" component={Login} />
           <Route path="/favorites" component={PrivateFavoritesPage} />
-          <Route path="/offer/:id" component={Property} />;
+          <Route path="/offer/:id" exact component={Property} />
+          <Route path="/jsredir/:id" exact component={Redirector} />
         </Switch>
-
         <footer className="footer">
           <Link className="footer__logo-link" to="/">
             <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
@@ -114,66 +83,17 @@ const Main = (props) => {
 };
 
 Main.propTypes = {
-  listOffers: PropTypes.array.isRequired,
-  cities: PropTypes.array.isRequired,
-  cityCoords: PropTypes.object.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onSelect: PropTypes.func.isRequired,
   onLogoutClick: PropTypes.func.isRequired,
-  currentCity: PropTypes.string,
-  isLoadingFailed: PropTypes.bool,
-  isLoading: PropTypes.bool,
-  activePlace: PropTypes.object,
-  error: PropTypes.object,
   user: PropTypes.object,
+  isLoading: PropTypes.bool,
 };
 
-const mapStateToProps = (state) => {
-  const cityOffers = [];
-  const cities = [];
-  const allCoords = [];
-  const currentCityCoords = {};
-  state.listOffers.forEach((item) => {
-    cities.push(item.city.name);
-  });
-  const uniqueCities = Array.from(new Set(cities));
-  let currentCityName = uniqueCities[0];
-  let filteredOffers = selectCities(state.listOffers, uniqueCities[0]);
-  if (state.city && state.city !== uniqueCities[0]) {
-    currentCityName = state.city;
-    filteredOffers = selectCities(state.listOffers, state.city);
-  }
-  if (filteredOffers.length) {
-    currentCityCoords.location = filteredOffers[0].city.location;
-    currentCityCoords.zoom = filteredOffers[0].city.location.zoom;
-  }
-  filteredOffers.forEach((item) => {
-    const place = {};
-    place.location = item.city.location;
-    cityOffers.push(item);
-    allCoords.push(place);
-  });
-  return {
-    listOffers: filteredOffers,
-    cities: uniqueCities,
-    coordsOffers: allCoords,
-    currentCity: currentCityName,
-    cityCoords: currentCityCoords,
-    isLoadingFailed: state.isLoadingFailed,
-    isLoading: state.isLoading,
-    activePlace: state.activeCard,
-    error: state.error,
-    user: state.user,
-  };
-};
+const mapStateToProps = (state) => ({
+  isLoading: state[`OFFERS`].isLoading,
+  user: state[`USER`].user,
+});
 
 const mapDispatchToProps = (dispatch) => ({
-  onChange: (city) => {
-    dispatch(ActionsCreator[`CHANGE_CITY`](city));
-  },
-  onSelect: (data) => {
-    dispatch(ActionsCreator[`SELECT_CARD`](data));
-  },
   onLogoutClick: () => {
     dispatch(unauthorizeUser());
   },

@@ -1,6 +1,6 @@
 import axios from "axios";
 import history from "./util/util.js";
-import {ActionsCreator} from "./reducers/reducer.js";
+import {ActionsCreator} from "./reducers/user/user.js";
 
 const BASE_URL = `https://es31-server.appspot.com/six-cities`;
 const ACCESS_DENIED_CODE = 403;

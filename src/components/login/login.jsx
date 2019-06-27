@@ -4,7 +4,7 @@ import {Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 import {compose} from "recompose";
 import withFormHandler from "../../hocs/with-form-handler.js";
-import {authorizeUser} from "../../reducers/reducer.js";
+import {authorizeUser} from "../../reducers/user/user.js";
 
 class Login extends PureComponent {
   constructor(props) {
@@ -54,8 +54,8 @@ class Login extends PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-  user: state.user,
-  authorizationError: state.autorizationError,
+  user: state[`USER`].user,
+  authorizationError: state[`USER`].autorizationError,
 });
 
 const mapDispatchToProps = (dispatch) => ({

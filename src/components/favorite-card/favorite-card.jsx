@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {removeFromFavorites} from "../../reducers/reducer.js";
+import {removeFromFavorites} from "../../reducers/favorites/favorites.js";
 import {Link} from "react-router-dom";
 
 const FavoriteCard = (props) => {

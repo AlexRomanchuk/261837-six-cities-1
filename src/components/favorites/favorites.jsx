@@ -1,7 +1,7 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {loadFavorites} from "../../reducers/reducer.js";
+import {loadFavorites} from "../../reducers/favorites/favorites.js";
 import FavoriteCard from "../favorite-card/favorite-card.jsx";
 import {getOrderedFavorites} from "../../util/util.js";
 
@@ -96,12 +96,11 @@ Favorites.propTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const sortedFavorites = getOrderedFavorites(state.favoritePlaces);
+  const sortedFavorites = getOrderedFavorites(state[`FAVORITES`].favoritePlaces);
   return {
-    isLoading: state.isFavoritesLoading,
-    isLoaded: state.isFavoritesLoaded,
+    isLoading: state[`FAVORITES`].isFavoritesLoading,
+    isLoaded: state[`FAVORITES`].isFavoritesLoaded,
     favorites: sortedFavorites,
-    isAuthorizationRequired: state.isAuthorizationRequired,
   };
 };
 

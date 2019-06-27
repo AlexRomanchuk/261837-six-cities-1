@@ -1,0 +1,145 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`correct renders main page 1`] = `
+<Router
+  history={
+    Object {
+      "action": "POP",
+      "block": [Function],
+      "createHref": [Function],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "pathname": "/",
+        "search": "",
+        "state": undefined,
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
+  staticContext={Object {}}
+>
+  <MainPage
+    cities={
+      Array [
+        "Amsterdam",
+        "Dusseldorf",
+        "Moscow",
+      ]
+    }
+    cityCoords={
+      Object {
+        "coordinates": Object {
+          "coords": Array [
+            52.3809553943508,
+            4.939309666406198,
+          ],
+        },
+      }
+    }
+    currentCity="Amsterdam"
+    isLoadingFailed={false}
+    listOffers={
+      Array [
+        Object {
+          "bedrooms": 2,
+          "city": Object {
+            "location": Object {
+              "latitude": 1,
+              "longitude": 2,
+              "zoom": 13,
+            },
+            "name": "City name 1",
+          },
+          "description": "text",
+          "goods": Array [
+            "one",
+            "two",
+            "tree",
+          ],
+          "host": Object {
+            "avatarUrl": "url",
+            "id": 1,
+            "isPro": true,
+            "name": "name",
+          },
+          "id": 999,
+          "images": Array [
+            "url1",
+            "url2",
+            "url3",
+          ],
+          "isFavorite": true,
+          "isPremium": true,
+          "location": Object {
+            "latitude": 1,
+            "longitude": 2,
+            "zoom": 13,
+          },
+          "maxAdults": 2,
+          "picture": "test-image1.jpg",
+          "previewImage": "",
+          "price": 111,
+          "rating": 22,
+          "title": "Test title 1",
+          "type": "apartment",
+        },
+        Object {
+          "bedrooms": 3,
+          "city": Object {
+            "location": Object {
+              "latitude": 1,
+              "longitude": 2,
+              "zoom": 13,
+            },
+            "name": "City name 2",
+          },
+          "coordinates": Array [
+            52.3909553943508,
+            4.85309666406198,
+          ],
+          "description": "text",
+          "goods": Array [
+            "one",
+            "two",
+            "tree",
+          ],
+          "host": Object {
+            "avatarUrl": "url",
+            "id": 1,
+            "isPro": true,
+            "name": "name",
+          },
+          "id": 222,
+          "images": Array [
+            "url1",
+            "url2",
+            "url3",
+          ],
+          "isFavorite": true,
+          "isPremium": false,
+          "location": Object {
+            "latitude": 1,
+            "longitude": 2,
+            "zoom": 13,
+          },
+          "maxAdults": 1,
+          "picture": "test-image2.jpg",
+          "previewImage": "",
+          "price": 222,
+          "rating": 100,
+          "title": "Test title 2",
+          "type": "house",
+        },
+      ]
+    }
+    load={[Function]}
+    onChange={[Function]}
+    onSelect={[Function]}
+  />
+</Router>
+`;

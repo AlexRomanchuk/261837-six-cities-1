@@ -1,6 +1,6 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
-import {ActionsCreator, sendReview} from "../../reducers/reducer.js";
+import {ActionsCreator, sendReview} from "../../reducers/comments/comments.js";
 import {connect} from "react-redux";
 
 class ReviewsForm extends PureComponent {
@@ -104,13 +104,13 @@ const Lenght = {
 };
 
 const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
-  sending: state.isCommentSending,
-  sended: state.isCommentSended,
-  sendingError: state.commentError,
-  invalid: (!state.rating || state.rating === 0 || state.comment.length < Lenght.MIN || state.comment.length > Lenght.MAX) ? true : false,
+  sending: state[`COMMENTS`].isCommentSending,
+  sended: state[`COMMENTS`].isCommentSended,
+  sendingError: state[`COMMENTS`].commentError,
+  invalid: (!state[`COMMENTS`].rating || state[`COMMENTS`].rating === 0 || state[`COMMENTS`].comment.length < Lenght.MIN || state[`COMMENTS`].comment.length > Lenght.MAX) ? true : false,
   formData: {
-    rating: Number(state.rating),
-    comment: state.comment,
+    rating: Number(state[`COMMENTS`].rating),
+    comment: state[`COMMENTS`].comment,
   },
 });
 

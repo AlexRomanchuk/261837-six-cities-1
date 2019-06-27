@@ -14,32 +14,16 @@ const Noteboard = (props) => {
     activePlace,
     onClick,
     onSortClick,
-    onOpenSortClick,
-    isLoadingFailed
+    onOpenSortClick
   } = props;
 
-  let sortedPlaces = [...places];
+  let sortedPlaces = [];
 
-  if (activeParameter.action) {
-    sortedPlaces = sortedPlaces.sort(activeParameter.action);
+  if (places) {
+    sortedPlaces = [...places];
   }
 
-  if (isLoadingFailed) {
-    return <div className="cities__places-wrapper">
-      <div className="cities__places-container cities__places-container--empty container">
-        <section className="cities__no-places">
-          <div className="cities__status-wrapper tabs__content">
-            <b className="cities__status">Server is not avaiable</b>
-          </div>
-        </section>
-        <div className="cities__right-section">
-          <section className="cities__map map"></section>
-        </div>
-      </div>
-    </div>;
-  }
-
-  if (!sortedPlaces.length) {
+  if (!places || !sortedPlaces.length) {
     return <div className="cities__places-wrapper">
       <div className="cities__places-container cities__places-container--empty container">
         <section className="cities__no-places">
@@ -53,6 +37,10 @@ const Noteboard = (props) => {
         </div>
       </div>
     </div>;
+  }
+
+  if (activeParameter.action) {
+    sortedPlaces = sortedPlaces.sort(activeParameter.action);
   }
 
   return <div className="cities__places-wrapper">
@@ -110,7 +98,6 @@ Noteboard.propTypes = {
   places: PropTypes.array.isRequired,
   cityCoords: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
-  onSelect: PropTypes.func.isRequired,
   isSortOpen: PropTypes.bool.isRequired,
   onOpenSortClick: PropTypes.func.isRequired,
   activeParameter: PropTypes.shape({
@@ -122,7 +109,6 @@ Noteboard.propTypes = {
     action: PropTypes.func,
   }).isRequired).isRequired,
   onSortClick: PropTypes.func.isRequired,
-  isLoadingFailed: PropTypes.bool,
   city: PropTypes.string,
   activePlace: PropTypes.object,
 };

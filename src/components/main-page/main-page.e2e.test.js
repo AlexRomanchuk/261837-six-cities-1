@@ -1,7 +1,7 @@
 import React from "react";
 import Enzyme, {shallow} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import {Main} from "../main/main.jsx";
+import {MainPage} from "../main-page/main-page.jsx";
 
 Enzyme.configure({adapter: new Adapter()});
 
@@ -94,7 +94,7 @@ const fakeCallback = () => {
 
 it(`correct click handler on card title`, () => {
   const clickHandler = jest.fn();
-  const main = shallow(<Main
+  const mainPage = shallow(<MainPage
     listOffers={mockPlaces}
     cities={cities}
     currentCity={currentCity}
@@ -102,12 +102,10 @@ it(`correct click handler on card title`, () => {
     cityCoords={cityCoords}
     onSelect={fakeCallback}
     onSubmitForm={fakeCallback}
-    onLogoutClick={fakeCallback}
-    isLoading={false}
-    isLoadingFailed={false}
+    load={() => {}}
   />);
 
-  const headerLink = main.find(`.place-card__name a`);
+  const headerLink = mainPage.find(`.place-card__name a`);
   headerLink.props.onClick = clickHandler;
   headerLink.props.onClick();
 

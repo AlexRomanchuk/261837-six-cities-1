@@ -5,7 +5,9 @@ import Main from "./components/main/main.jsx";
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 import {createStore, applyMiddleware} from "redux";
-import {reducer, loadData, loadAuthorizationData} from "./reducers/reducer.js";
+import reducer from "./reducers/reducer.js";
+import {loadData} from "./reducers/offers/offers.js";
+import {loadAuthorizationData} from "./reducers/user/user.js";
 import {configureAPI, setupAPIinterceptors} from "./api.js";
 
 const api = configureAPI();
