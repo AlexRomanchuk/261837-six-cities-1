@@ -83,6 +83,7 @@ it(`Property snapshot`, () => {
     user={{name: `name`}}
     isAuthorizeRequired={false}
     onBookmarksClick={jest.fn}
+    load={jest.fn}
     nearOffers={[mockPlaces[1], mockPlaces[1], mockPlaces[1]]}
     offer={mockPlaces[0]}
   /></StaticRouter>);

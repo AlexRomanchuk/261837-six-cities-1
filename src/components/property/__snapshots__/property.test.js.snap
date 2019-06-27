@@ -25,6 +25,7 @@ exports[`Property snapshot 1`] = `
 >
   <Property
     isAuthorizeRequired={false}
+    load={[Function]}
     nearOffers={
       Array [
         Object {

@@ -5,6 +5,7 @@ import ReviewsForm from "../reviews-form/reviews-form.jsx";
 import Reviews from "../reviews/reviews.jsx";
 import {connect} from "react-redux";
 import {changeFavorites} from "../../reducers/favorites/favorites.js";
+import {loadData} from "../../reducers/offers/offers.js";
 import {getTreeNearPlaces, getOfferById} from "../../util/util.js";
 import Map from "../map/map.jsx";
 import {Link} from "react-router-dom";
@@ -160,6 +161,10 @@ class Property extends PureComponent {
       </div>
     </main>;
   }
+  componentDidMount() {
+    const {load} = this.props;
+    load();
+  }
   _handelBookmarksClick() {
     const {offer, onBookmarksClick} = this.props;
     onBookmarksClick(offer);
@@ -167,6 +172,7 @@ class Property extends PureComponent {
 }
 
 Property.propTypes = {
+  load: PropTypes.func.isRequired,
   onBookmarksClick: PropTypes.func.isRequired,
   nearOffers: PropTypes.arrayOf(
       PropTypes.shape({
@@ -197,6 +203,7 @@ const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
 
 const mapDispatchToProps = (dispatch) => ({
   onBookmarksClick: (offer) => dispatch(changeFavorites(offer)),
+  load: () => dispatch(loadData(`/hotels`)),
 });
 
 export {Property};
